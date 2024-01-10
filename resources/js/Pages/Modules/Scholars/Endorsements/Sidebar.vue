@@ -1,6 +1,6 @@
 <template>
     <div class="p-4 d-flex flex-column h-100" style="overflow: auto;">
-        <h6 class="fs-11 text-muted text-uppercase mb-3 mt-0">{{counts.year}} QUALIFIERS</h6>
+        <h6 class="fs-11 text-muted text-uppercase mb-3 mt-0">{{counts.year}} ENDORSEMENTS</h6>
         <div class="d-flex align-items-center">
             <div class="flex-shrink-0">
                 <i class="ri-database-2-line fs-17"></i>
@@ -13,7 +13,7 @@
             </div>
         </div>
         <hr class="text-muted"/>
-        <div class="table-responsive">
+        <!-- <div class="table-responsive">
             <table class="table table-borderless table-sm table-centered align-middle table-nowrap">
                 <tbody class="border-0">
                     <tr v-for="(count,index) in counts.statistics" v-bind:key="index">
@@ -29,7 +29,7 @@
                 </tbody>
             </table>
         </div>
-        <hr class="text-muted mt-n1"/>
+        <hr class="text-muted mt-n1"/> -->
         <div class="mt-auto">
             <!-- <b-row class="g-1">
                 <b-col lg="4">

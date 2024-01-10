@@ -72,6 +72,11 @@
                                     <span data-key="t-dashboards">Endorsements</span>
                                 </Link>
                             </li>
+                            <li class="nav-item">
+                                <Link class="nav-link" :class="{'active': $page.component.startsWith('Modules/Scholars/Transferees') }" href="/scholars/transferees">
+                                    <span data-key="t-dashboards">Transferees</span>
+                                </Link>
+                            </li>
                         </ul>
                     </div>
                 </li>
