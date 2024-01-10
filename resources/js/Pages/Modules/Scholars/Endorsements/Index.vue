@@ -1,12 +1,12 @@
 <template>
-    <Head title="Endorsement" />
+    <Head title="Endorsements" />
     <PageHeader :title="title" :items="items" />
-    <div class="chat-wrapper d-lg-flex gap-1 mx-n4 mt-n4 p-1" v-if="status == true">
+     <div class="chat-wrapper d-lg-flex gap-1 mx-n4 mt-n4 p-1" v-if="status == true">
         <div class="file-manager-sidebar">
-            <Sidebar />
+            <Sidebar ref="sidebar"/>
         </div>
         <div class="file-manager-content w-100 p-4 pb-0" style="height: calc(100vh - 180px); overflow: auto;" ref="box">
-            <Lists />
+            <List @status="fetchUpdate()" :dropdowns="dropdowns" :status_list="status_list" :program_list="program_list" :subprogram_list="subprogram_list" :regions="regions.data"/>
         </div>
     </div>
     <div class="chat-wrapper d-lg-flex gap-1 mx-n4 mt-n4 p-1" v-else>
@@ -17,16 +17,17 @@
     </div>
 </template>
 <script>
-import Lists from './Lists.vue';
+import List from './Lists.vue';
 import Sidebar from './Sidebar.vue';
 import PageHeader from "@/Shared/Components/PageHeader.vue";
 export default {
-    components : { PageHeader, Sidebar, Lists},
+    props: ['dropdowns','programs','regions','statuses'],
+    components : { PageHeader, List, Sidebar },
     data() {
         return {
             currentUrl: window.location.origin,
-            title: "List of Endorsement",
-            items: [{text: "Endorsement",href: "/"},{text: "List",active: true}],
+            title: "List of Endorsements",
+            items: [{text: "Endorsements",href: "/"},{text: "List",active: true}],
             status: '',
         };
     },
@@ -56,6 +57,9 @@ export default {
                 }
             });
         },
+        fetchUpdate(){
+            this.$refs.sidebar.fetch();
+        }
     }
 }
 </script>
