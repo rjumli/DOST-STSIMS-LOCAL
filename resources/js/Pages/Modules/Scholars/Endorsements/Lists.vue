@@ -24,9 +24,9 @@
                 <tr class="fs-11">
                     <th></th>
                     <th style="width: 30%;">Name</th>
-                    <th style="width: 15%;" class="text-center">Endorsed By</th>
                     <th style="width: 15%;" class="text-center">Address</th>
                     <th style="width: 15%;" class="text-center">Awarded Year</th>
+                    <th style="width: 15%;" class="text-center">Endorsed By</th>
                     <th style="width: 15%;" class="text-center">Status</th>
                     <th style="width: 10%;"></th>
                 </tr>
@@ -46,9 +46,6 @@
                         <p class="fs-11 text-muted mb-0">{{list.spas_id }}</p>
                     </td>
                     <td class="text-center">
-                        {{list.endorsement.endorsedto.region}}
-                    </td>
-                    <td class="text-center">
                         <h5 class="fs-11 mb-0 text-dark">{{list.address.name}}</h5>
                         <p class="fs-11 text-muted mb-0">
                             {{(list.address.province) ? list.address.province.name+',' : ''}}
@@ -56,6 +53,9 @@
                         </p>
                     </td>
                     <td class="text-center">{{list.qualified_year}}</td>
+                    <td class="text-center">
+                        {{list.endorsement.endorsedto.region}}
+                    </td>
                     <td class="text-center">
                         <span :class="'badge '+list.type.color+' '+list.type.others">{{list.type.name}}</span>
                     </td>
