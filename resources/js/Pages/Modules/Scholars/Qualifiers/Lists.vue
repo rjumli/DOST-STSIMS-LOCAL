@@ -68,25 +68,29 @@
                         <span :class="'badge '+list.status.color+' '+list.status.others">{{list.status.name}}</span>
                     </td>
                     <td class="text-end">
-                        <b-button variant="soft-primary" v-if="list.type.name != 'Enrolled'" @click="openEndorse(list,'endorse',index)" v-b-tooltip.hover title="Endorse" size="sm" class="edit-list me-1"><i class="ri-swap-fill align-bottom"></i> </b-button>
-                        <b-button v-if="list.type.name != 'Enrolled'"  @click="openAdd(list,'add',index)" variant="soft-primary" v-b-tooltip.hover title="Add Scholar" size="sm" class="edit-list me-1"><i class="ri-user-add-fill align-bottom"></i> </b-button>
+                        <b-button variant="soft-primary" v-if="list.type.name == 'Waiting'" @click="openEndorse(list,'endorse',index)" v-b-tooltip.hover title="Endorse" size="sm" class="edit-list me-1"><i class="ri-swap-fill align-bottom"></i> </b-button>
+                        <b-button v-if="list.type.name == 'Waiting'"  @click="openAdd(list,'add',index)" variant="soft-primary" v-b-tooltip.hover title="Add Scholar" size="sm" class="edit-list me-1"><i class="ri-user-add-fill align-bottom"></i> </b-button>
                         <b-button v-if="list.address.is_completed == 0" @click="openUpdate(list,'update',index)" variant="soft-danger" v-b-tooltip.hover title="Update Address" size="sm" class="remove-list me-1"><i class="ri-map-pin-fill align-bottom"></i></b-button>
-                        <b-button variant="soft-primary" @click="openEdit(list,'edit',index)" v-b-tooltip.hover title="Edit" size="sm" class="edit-list"><i class="ri-pencil-fill align-bottom"></i> </b-button>
+                        <b-button variant="soft-primary" v-if="list.type.name != 'Not Avail' && list.type.name != 'Deferment'" @click="openEdit(list,'edit',index)" v-b-tooltip.hover title="Edit" size="sm" class="edit-list"><i class="ri-pencil-fill align-bottom"></i> </b-button>
+                        <b-button variant="soft-primary" v-if="list.type.name == 'Not Avail'" @click="openView(list,'Not Avail')" v-b-tooltip.hover title="View" size="sm" class="edit-list"><i class="ri-eye-fill align-bottom"></i> </b-button>
+                        <b-button variant="soft-primary" v-if="list.type.name == 'Deferment'" @click="openView(list,'Deferment')" v-b-tooltip.hover title="View" size="sm" class="edit-list"><i class="ri-eye-fill align-bottom"></i> </b-button>
                     </td>
                 </tr>
             </tbody>
         </table>
         <Pagination class="ms-2 me-2" v-if="meta" @fetch="extractPageNumber" :lists="lists.length" :links="links" :pagination="meta" />
     </div>
-    <Add @status="fetch()" ref="add"/>
-    <Endorse @status="fetch()" ref="endorse"/>
+    <Add @status="fetchUpdate()" ref="add"/>
+    <View ref="view"/>
+    <Endorse @status="fetchUpdate()" ref="endorse"/>
     <Filter :regions="regions" :dropdowns="dropdowns" :programs="program_list" :subprograms="subprogram_list" @status="subfilter" ref="filter"/>
-    <Update @status="fetch()" ref="update"/>
-    <Edit @status="fetch()" :statuses="status_list" ref="edit"/>
+    <Update @status="fetchUpdate()" ref="update"/>
+    <Edit @status="fetchUpdate()" :statuses="status_list" ref="edit"/>
 </template>
 <script>
 import Add from './Modals/Add.vue';
 import Edit from './Modals/Edit.vue';
+import View from './Modals/View.vue';
 import Endorse from './Modals/Endorse.vue';
 import Filter from './Modals/Filter.vue';
 import Update from './Modals/Update.vue';
@@ -95,7 +99,7 @@ import "@vueform/multiselect/themes/default.css";
 import Pagination from "@/Shared/Components/Pagination.vue";
 export default {
     props: ['regions','dropdowns','program_list','subprogram_list','status_list'],
-    components : { Pagination, Filter, Multiselect, Add, Endorse, Update, Edit },
+    components : { Pagination, Filter, Multiselect, Add, Endorse, Update, Edit, View },
     data(){
         return {
             currentUrl: window.location.origin,
@@ -183,10 +187,17 @@ export default {
             this.flag = type;
             this.$refs.edit.show(data,type);
         },
+        openView(data,type){
+            this.$refs.view.show(data,type);
+        },
         subfilter(list){
             this.subfilters = list;
             this.subfilters = (Object.keys(this.subfilters).length == 0) ? '-' : JSON.stringify(this.subfilters);
             this.fetch();
+        },
+        fetchUpdate(){
+            this.fetch();
+            this.$emit('status',true);
         },
         extractPageNumber(page_url) {
             this.pageNo = null;

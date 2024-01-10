@@ -26,6 +26,12 @@
                         :searchable="true" :options="status_list" />
                     </div>
                 </div>
+                <div class="col-md-12 mt-3">
+                   <div class="form-group">
+                        <label>Reason: <span v-if="errors.reason" v-text="errors.reason" class="haveerror"></span></label>
+                        <textarea v-model="reason" class="form-control" maxlength="225" rows="1" placeholder="Reason"></textarea>
+                    </div>
+                </div>
             </div>
         </b-form>
         <template v-slot:footer>
@@ -52,6 +58,7 @@ export default {
                 profile: {},
             },
             status: '',
+            reason: '',
             form : {},
             showModal: false,
         }
@@ -76,6 +83,7 @@ export default {
             data.append('id', this.user.id);
             data.append('type', 'edit');
             data.append('status_type', this.status);
+            data.append('reason', this.reason);
 
             this.$inertia.post('/scholars/qualifiers',data,{
                 preserveScroll: true,

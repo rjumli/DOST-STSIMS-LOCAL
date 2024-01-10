@@ -6,9 +6,9 @@
                 <i class="ri-database-2-line fs-17"></i>
             </div>
             <div class="flex-grow-1 ms-3 overflow-hidden">
-                <div class="progress mb-2 progress-sm">
-                    <div class="progress-bar bg-success" role="progressbar" style="" aria-valuenow="Infinity" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
+               <b-progress class="animated-progress progress-sm mb-2" :max="counts.total">
+                    <b-progress-bar :value="counts.ongoing" variant="primary" />
+                </b-progress>
                 <span class="text-muted fs-12 d-block text-truncate"><b>{{counts.ongoing}}</b> out of <b>{{counts.total}}</b> qualifiers are enrolled.</span>
             </div>
         </div>

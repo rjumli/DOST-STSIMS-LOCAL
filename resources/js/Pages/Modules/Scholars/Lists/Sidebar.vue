@@ -6,13 +6,9 @@
                 <i class="ri-database-2-line fs-17"></i>
             </div>
             <div class="flex-grow-1 ms-3 overflow-hidden">
-                <!-- <div class="progress mb-2 progress-sm">
-                    <div class="progress-bar bg-success" role="progressbar" style="" :value="ongoing" aria-valuenow="Infinity" aria-valuemin="0" :aria-valuemax="ongoing"></div>
-                </div> -->
                 <b-progress class="animated-progress progress-sm mb-2" :max="total">
                     <b-progress-bar :value="ongoing" variant="primary" />
                 </b-progress>
-                <!-- <b-progress animated variant="primary" class="mb-2 progress-sm" :value="ongoing" :max="total"/> -->
                 <span class="text-muted fs-12 d-block text-truncate"><b>{{ongoing}}</b> out of <b>{{total}}</b> ongoing scholars are enrolled.</span>
             </div>
         </div>

@@ -89,6 +89,7 @@ class SaveService
         $postData = array(
             'id' => $request->id,
             'status_type' => $request->status_type,
+            'reason' => $request->reason,
             'type' => 'edit'
         );
         $data = $this->sender($postData);
