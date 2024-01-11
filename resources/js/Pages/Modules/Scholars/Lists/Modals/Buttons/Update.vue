@@ -5,7 +5,7 @@
             <button @click="hide()" type="button" class="btn-close" aria-label="Close"></button>
         </template>
 
-        <b-form class="customform mb-2">
+        <b-form class="customform mb-2 ms-2 me-2">
             <div class="row">
                 <div class="col-md">
                     <div class="p-3 border border-dashed rounded">

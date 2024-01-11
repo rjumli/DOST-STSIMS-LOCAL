@@ -66,6 +66,10 @@ class SaveService
     }
 
     public function update($request){
+        $request->validate([
+            'municipality_code' => 'sometimes|required',
+            'barangay_code' => 'sometimes|required',
+        ]);
         $postData = array(
             'id' => $request->id,
             'is_completed' => 1,
@@ -73,7 +77,7 @@ class SaveService
             'address_id' => $request->address_id,
             'type' => 'update'
         );
-        ($request->municipality_code) ? $postData['municipality_code'] = $request->municipality_code : '';
+        ($request->municipality_code != null && $request->municipality_code != 'n/a' ) ? $postData['municipality_code'] = $request->municipality_code : '';
         ($request->barangay_code) ? $postData['barangay_code'] = $request->barangay_code : '';
 
         $data = $this->sender($postData);

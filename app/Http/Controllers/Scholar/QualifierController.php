@@ -6,6 +6,7 @@ use App\Services\Qualifier\ApiService;
 use App\Services\Qualifier\SaveService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\QualifierRequest;
 
 class QualifierController extends Controller
 {
