@@ -231,11 +231,12 @@ export default {
         },
         create(){
             this.form = this.$inertia.form({
+                id: this.user.endorsement.id,
                 user: this.user,
                 school_id: this.user.endorsement.school.id,
                 course_id: this.user.endorsement.course.id,
                 account_no: this.account_no,
-                type: 'enroll'
+                type: 'endorsed'
             });
             this.$refs.confirm.show(this.form);
         },

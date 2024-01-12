@@ -57,6 +57,10 @@ class SaveService
     }
 
     public function endorsed($request){
+        $request->validate([
+            'school_id' => 'sometimes|required',
+            'course_id' => 'sometimes|required',
+        ]);
         $postData = array(
             'id' => $request->id,
             'user' => $request->user,
@@ -66,9 +70,10 @@ class SaveService
         );
         $data = $this->sender($postData);
         return back()->with([
+            'data' => ($data) ? $data : 'Nothing found.',
             'message' => 'Endorsed successfully. Thanks',
-            'data' =>  $data,
-            'type' => 'bxs-check-circle'
+            'info' => '-',
+            'status' => true,
         ]); 
         
     }

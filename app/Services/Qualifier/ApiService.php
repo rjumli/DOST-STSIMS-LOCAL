@@ -48,7 +48,7 @@ class ApiService
 
     public function counts(){
         try{
-            $url = $this->link.'/api/01101011%2001110010%2001100001%2001100100/statistics';
+            $url = $this->link.'/api/01101011%2001110010%2001100001%2001100100/statistic/qualifiers';
             $curl = curl_init();
             curl_setopt_array($curl, array(
             CURLOPT_URL => $url,

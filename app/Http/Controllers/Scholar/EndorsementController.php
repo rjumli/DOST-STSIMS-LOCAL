@@ -21,6 +21,9 @@ class EndorsementController extends Controller
             case 'lists':
                 return $this->api->lists($request);
             break;
+            case 'counts':
+                return $this->api->counts();
+            break;
             default : 
             return inertia('Modules/Scholars/Endorsements/Index');
         }
