@@ -88,7 +88,7 @@
     </div>
     <Filter :regions="regions" :dropdowns="dropdowns" :programs="program_list" :subprograms="subprogram_list" @status="subfilter" ref="filter"/>
     <Address @status="fetchUpdate()" ref="address"/>
-    <Profile :statuses="status_list" ref="profile"/>
+    <Profile @status="fetchUpdate()" :statuses="status_list" ref="profile"/>
 </template>
 <script>
 import Address from './Modals/Address.vue';

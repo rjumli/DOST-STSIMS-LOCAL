@@ -24,46 +24,54 @@ use App\Http\Resources\Dropdown\CourseListResource;
 
 class ListController extends Controller
 {
-    public function regions()
+    public $id;
+
+    public function __construct()
     {
+        $this->id = config('app.agency');
+    }
+
+    public function regions(){
         $data = LocationRegion::orderBy('id','ASC')->get();
         return DefaultResource::collection($data);
     }
 
-    public function provinces($id = null)
-    {
+    public function provinces($id = null){
         $data = LocationProvince::where('region_code',$id)->orderBy('name','ASC')->get();
         return LocationResource::collection($data);
     }
 
-    public function municipalities($id = null)
-    {
+    public function municipalities($id = null){
         $data = LocationMunicipality::where('province_code',$id)->orderBy('name','ASC')->get();
         return LocationResource::collection($data);
     }
 
-    public function barangays($id = null)
-    {
+    public function barangays($id = null){
         $data = LocationBarangay::where('municipality_code',$id)->orderBy('name','ASC')->get();
         return LocationResource::collection($data);
     }
 
     public function schools(Request $request){
-
         $keyword = $request->input('word');
+        $is_endorsed = $request->input('is_endorsed');
+        $code = ListAgency::where('id',$this->id)->value('region_code');
+        // dd($is_endorsed);
         $data = SchoolCampus::with('school','term')->with('courses.course')
+        ->where(function ($query) use ($code,$is_endorsed) {
+            ($is_endorsed) ? $query->where('assigned_region','!=',$code) : $query->where('assigned_region',$code);
+        })
         ->whereHas('school',function ($query) use ($keyword) {
             $query->where('name', 'LIKE', '%'.$keyword.'%');
         })
         ->orWhere(function ($query) use ($keyword) {
             $query->where('campus',$keyword);
-        })->get()->take(10);
+        })
+        ->get()->take(10);
 
         return SchoolResource::collection($data);
     }
 
     public function courses(Request $request){
-
         $id = $request->id;
         $data = SchoolCourse::whereHas('school',function ($query) use ($id) {
             $query->where('id',$id);
@@ -81,7 +89,6 @@ class ListController extends Controller
         ->get()->take(10);
         return CourseListResource::collection($data);
     }
-
 
     public function api_agencies(){
         $data = ListAgency::all();

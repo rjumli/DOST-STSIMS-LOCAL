@@ -16,6 +16,10 @@ class SaveService
     }
 
     public function enroll($request){
+        $request->validate([
+            'school_id' => 'sometimes|required',
+            'course_id' => 'sometimes|required',
+        ]);
         $postData = array(
             'user' => $request->user,
             'school_id' => $request->school_id,
@@ -33,6 +37,10 @@ class SaveService
     }
 
     public function endorse($request){
+        $request->validate([
+            'school_id' => 'sometimes|required',
+            'course_id' => 'sometimes|required',
+        ]);
         $postData = array(
             'user' => $request->user,
             'school_id' => $request->school_id,
@@ -90,6 +98,10 @@ class SaveService
     }
 
     public function edit($request){
+        $request->validate([
+            'status_type' => 'sometimes|required',
+            'reason' => 'sometimes|required',
+        ]);
         $postData = array(
             'id' => $request->id,
             'status_type' => $request->status_type,

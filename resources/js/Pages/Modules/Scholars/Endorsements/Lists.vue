@@ -8,7 +8,7 @@
                 <Multiselect class="form-control" style="width:12%"
                  placeholder="Select Status" label="name" trackBy="name"
                 v-model="filter.status" :close-on-select="true" :canDeselect="false" :canClear="false"
-                :searchable="false" :options="status_list" />
+                :searchable="false" :options="statuses" />
                 <span @click="refresh" class="input-group-text" v-b-tooltip.hover title="Refresh" style="cursor: pointer;"> 
                     <i class="bx bx-refresh search-icon"></i>
                 </span>
@@ -60,14 +60,14 @@
                         <span :class="'badge '+list.type.color+' '+list.type.others">{{list.type.name}}</span>
                     </td>
                     <td class="text-end">
-                        <b-button variant="soft-primary" @click="openView(list,'Deferment')" v-b-tooltip.hover title="View" size="sm" class="edit-list"><i class="ri-eye-fill align-bottom"></i> </b-button>
+                        <b-button variant="soft-primary" @click="openView(list)" v-b-tooltip.hover title="View" size="sm" class="edit-list"><i class="ri-eye-fill align-bottom"></i> </b-button>
                     </td>
                 </tr>
             </tbody>
         </table>
         <Pagination class="ms-2 me-2" v-if="meta" @fetch="extractPageNumber" :lists="lists.length" :links="links" :pagination="meta" />
     </div>
-    <View ref="view"/>
+    <View @status="fetchUpdate()" ref="view"/>
     <Filter :regions="regions" :dropdowns="dropdowns" :programs="program_list" :subprograms="subprogram_list" @status="subfilter" ref="filter"/>
 </template>
 <script>
@@ -109,6 +109,12 @@ export default {
             this.fetch();
         },
     },
+    computed: {
+        statuses : function() {
+             const excludedStatusNames = ['Deferment','Not Avail'];
+            return this.status_list.filter(x => !excludedStatusNames.includes(x.name));
+        }
+    },
     created(){
         this.fetch();
     },
@@ -143,6 +149,10 @@ export default {
             })
             .catch(err => console.log(err));
         },
+        fetchUpdate(){
+            this.fetch();
+            this.$emit('status',true);
+        },
         openFilter(){
             this.$refs.filter.show();
         },
@@ -166,8 +176,8 @@ export default {
             this.flag = type;
             this.$refs.edit.show(data,type);
         },
-        openView(data,type){
-            this.$refs.view.show(data,type);
+        openView(data){
+            this.$refs.view.show(data);
         },
         subfilter(list){
             this.subfilters = list;
