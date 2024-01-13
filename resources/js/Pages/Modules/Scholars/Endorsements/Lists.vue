@@ -61,7 +61,8 @@
                     </td>
                     <td class="text-center">{{list.qualified_year}}</td>
                     <td class="text-center">
-                        {{list.endorsement.endorsedby.region}}
+                        <span v-if="filter.type == 'From'">{{list.endorsement.endorsedby.region}}</span>
+                        <span v-else>{{list.endorsement.endorsedto.region}}</span>
                     </td>
                     <td class="text-center">
                         <span :class="'badge '+list.type.color+' '+list.type.others">{{list.type.name}}</span>
