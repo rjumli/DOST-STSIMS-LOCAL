@@ -4,8 +4,12 @@
             <div class="input-group mb-1">
                 <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
                 <input type="text" v-model="filter.keyword" placeholder="Search Qualifier" class="form-control" style="width: 40%;">
-                <input type="text" v-model="filter.year" placeholder="Year Awarded" class="form-control" style="width: 30px;">
-                <Multiselect class="form-control" style="width:12%"
+                <!-- <input type="text" v-model="filter.year" placeholder="Year Awarded" class="form-control" style="width: 30px;"> -->
+                 <Multiselect class="form-control" style="width:5%"
+                 placeholder="Select Type" label="name" trackBy="name"
+                v-model="filter.type" :close-on-select="true" :canDeselect="false" :canClear="false"
+                :searchable="false" :options="['From','To']" />
+                <Multiselect class="form-control" style="width:8%"
                  placeholder="Select Status" label="name" trackBy="name"
                 v-model="filter.status" :close-on-select="true" :canDeselect="false" :canClear="false"
                 :searchable="false" :options="statuses" />
@@ -26,7 +30,10 @@
                     <th style="width: 30%;">Name</th>
                     <th style="width: 15%;" class="text-center">Address</th>
                     <th style="width: 15%;" class="text-center">Awarded Year</th>
-                    <th style="width: 15%;" class="text-center">Endorsed By</th>
+                    <th style="width: 15%;" class="text-center">
+                        <span v-if="filter.type == 'From'">Endorsed By</span>
+                        <span v-else>Endorsed To</span>
+                    </th>
                     <th style="width: 15%;" class="text-center">Status</th>
                     <th style="width: 10%;"></th>
                 </tr>
@@ -54,7 +61,7 @@
                     </td>
                     <td class="text-center">{{list.qualified_year}}</td>
                     <td class="text-center">
-                        {{list.endorsement.endorsedto.region}}
+                        {{list.endorsement.endorsedby.region}}
                     </td>
                     <td class="text-center">
                         <span :class="'badge '+list.type.color+' '+list.type.others">{{list.type.name}}</span>
@@ -90,7 +97,8 @@ export default {
                 year: null,
                 keyword: null,
                 status: 14,
-                sort: 'asc'
+                sort: 'asc',
+                type: 'From'
             },
             subfilters: [],
             flag: '',
@@ -108,6 +116,9 @@ export default {
         "filter.status"(){
             this.fetch();
         },
+        "filter.type"(){
+            this.fetch();
+        }
     },
     computed: {
         statuses : function() {
@@ -138,6 +149,7 @@ export default {
                 params: {
                     info: info,
                     subfilters: this.subfilters,
+                    type: this.filter.type,
                     option: 'lists',
                     page: this.pageNo
                 }

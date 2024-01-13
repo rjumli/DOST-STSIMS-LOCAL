@@ -19,9 +19,10 @@ class ApiService
         $info = $request->info;
         $subfilters = $request->subfilters;
         $page = ($request->page) ? '&page='.$request->page : '';
+        $type = $request->type;
 
         try{
-            $url = $this->link.'/api/01101011%2001110010%2001100001%2001100100/endorsements?info='.$info.'&subfilters='.$subfilters.$page.'&type=lists';
+            $url = $this->link.'/api/01101011%2001110010%2001100001%2001100100/endorsements?info='.$info.'&subfilters='.$subfilters.$page.'&type='.$type;
             $curl = curl_init();
             curl_setopt_array($curl, array(
             CURLOPT_URL => $url,
