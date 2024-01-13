@@ -22,9 +22,9 @@ class SchoolController extends Controller
     }
 
     public function index(Request $request){
-        switch($request->type){
+        switch($request->option){
             case 'lists':
-                return $this->view->fetch($request);
+                return $this->view->lists($request);
             break;
             case 'semesters':
                 return $this->view->semesters($request);
@@ -32,8 +32,11 @@ class SchoolController extends Controller
             case 'counts':
                 return $this->view->counts($request->id);
             break;
+            case 'courses':
+                return $this->view->courses($request);
+            break;
             default :
-            return inertia('Modules/Schools/Index');
+            return inertia('Modules/Schools/Index',$this->view->statistics());
         }
     }
 

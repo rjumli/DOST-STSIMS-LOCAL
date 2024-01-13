@@ -12,10 +12,8 @@
                 <span class="text-muted fs-12 d-block text-truncate"><b>{{ongoing}}</b> out of <b>{{total}}</b> ongoing scholars are enrolled.</span>
             </div>
         </div>
-
         <hr class="text-muted"/>
-
-        <div class="table-responsive">
+        <div>
             <table class="table table-borderless table-sm table-centered align-middle table-nowrap">
                 <tbody class="border-0">
                     <tr v-for="(count,index) in statistics" v-bind:key="index">
@@ -32,7 +30,7 @@
             </table>
         </div>
         <hr class="text-muted mt-n1 mb-3"/>
-        <div class="table-responsive">
+        <div>
             <table class="table table-borderless table-sm table-centered align-middle table-nowrap">
                 <tbody class="border-0">
                     <tr v-for="(count,index) in types" v-bind:key="index">

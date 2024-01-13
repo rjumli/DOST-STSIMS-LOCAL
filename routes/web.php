@@ -32,6 +32,8 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 
+    Route::resource('/schools', App\Http\Controllers\SchoolController::class);
+
     Route::prefix('logs')->group(function(){
         Route::controller(App\Http\Controllers\LogController::class)->group(function () {
             Route::get('/authentication','authentication');

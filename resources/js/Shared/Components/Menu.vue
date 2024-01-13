@@ -23,31 +23,11 @@
                         <span data-key="t-dashboards">Home</span>
                     </Link>
                 </li>
-                <li class="nav-item">
-                    <b-link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Schools') }" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebar1">
-                        <i class="ri-hotel-fill"></i>
+                 <li class="nav-item">
+                    <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Schools') }" href="/schools">
+                        <i class='ri-hotel-fill'></i>
                         <span data-key="t-dashboards">Schools</span>
-                    </b-link>
-                    <div class="collapse menu-dropdown" id="sidebar1">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <Link class="nav-link" :class="{'active': $page.component.startsWith('Modules/Schools/Lists') }" href="/schools/listing">
-                                    <span data-key="t-dashboards">Lists</span>
-                                </Link>
-                            </li>
-                            <li class="nav-item">
-                                <Link class="nav-link" :class="{'active': $page.component.startsWith('Modules/Scholars/Qualifiers') }" href="/schools/cou">
-                                    <span data-key="t-dashboards">Qualifiers</span>
-                                </Link>
-                            </li>
-                            <li class="nav-item">
-                                <Link class="nav-link" :class="{'active': $page.component.startsWith('Modules/Scholars/Endorsements') }" href="/scholars/endorsements">
-                                    <span data-key="t-dashboards">Endorsements</span>
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
+                    </Link>
                 </li>
                 <li class="nav-item">
                     <b-link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Scholars') }" data-bs-toggle="collapse" role="button"
