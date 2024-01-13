@@ -1082,7 +1082,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       currentUrl: window.location.origin,
       options: ['Undegraduate Scholarhip', 'Junior Level Science Scholarship', 'Total Endorsed Scholars'],
-      options2: ['My Endorsements', 'Endorsed From'],
+      options2: ['My Endorsements', 'Endorsements From'],
       colors: ['text-warning', 'text-primary', 'text-success'],
       counts: ''
     };
