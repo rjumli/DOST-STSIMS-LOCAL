@@ -23,14 +23,14 @@
                 <div class="d-flex align-items-center mb-3">
                     <span class="flex-grow-1 text-muted fs-14 mb-0"> List of Prospectus</span>
                     <div class="flex-shrink-0">
-                        <button @click="newProspectus(course)" class="btn btn-soft-primary btn-sm text-nowrap flex-shrink-0" type="button">
+                        <button @click="newProspectus(course)" class="btn btn-primary-subtle btn-sm text-nowrap flex-shrink-0" type="button">
                             <div class="btn-content"><i class="ri-add-line align-bottom me-1"></i> New</div>
                         </button>
                     </div>
                 </div>
                 <hr />
                 <div id="external-events" v-if="course.prospectuses.length > 0">
-                    <div @click="openProspectus(list,index)" style="cursor: pointer;" v-for="(list, index) of course.prospectuses" :key="index" class="external-event fc-event" :class="(list.is_active) ? 'bg-soft-success text-success' : 'bg-soft-primary text-primary'">
+                    <div @click="openProspectus(list,index)" style="cursor: pointer;" v-for="(list, index) of course.prospectuses" :key="index" class="external-event fc-event" :class="(list.is_active) ? 'bg-success-subtle text-success' : 'bg-primary-subtle text-primary'">
                         <i class="mdi mdi-checkbox-blank-circle font-size-11 me-2" :class="(list.is_active) ? 'text-success' : 'text-danger'"></i>Prospectus {{ list.school_year}} 
                         <i class="ri-lock-fill float-end" v-if="list.is_locked"></i>
                     </div>
@@ -58,11 +58,11 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="hstack float-end gap-2 mt-4 mt-sm-0">
-                                             <button @click="lock(prospectus)" v-b-tooltip.hover :title="(prospectus.is_locked) ? 'Unlock' : 'Lock'" class="btn btn-sm btn-light float-end mt-1 me-0" type="button">
+                                             <button @click="lock(prospectus)" v-b-tooltip.hover :title="(prospectus.is_locked) ? 'Unlock' : 'Lock'" class="btn btn-sm btn-light float-end mt-1 me-n2" type="button">
                                                 <div v-if="prospectus.is_locked" class="btn-content"><i class="ri-lock-unlock-fill"></i></div>
                                                 <div v-else class="btn-content"><i class="ri-lock-fill"></i></div>
                                             </button>
-                                            <button @click="activate(prospectus)" class="btn btn-sm btn-label mt-1" :class="(prospectus.is_active) ? 'btn-danger' : 'btn-success'" type="button">
+                                            <button v-if="prospectus.is_locked" @click="activate(prospectus)" class="btn btn-sm btn-label mt-1" :class="(prospectus.is_active) ? 'btn-danger' : 'btn-success'" type="button">
                                                 <div v-if="!prospectus.is_active" class="btn-content"><i class="ri-list-check label-icon align-middle fs-12 me-2"></i>Set as Active</div>
                                                 <div v-else class="btn-content"><i class="ri-list-check label-icon align-middle fs-12 me-2"></i>Set as Inactive</div>
                                             </button>
@@ -89,7 +89,7 @@
                                             <table class="table table-bordered mb-0"> 
                                                 <thead>
                                                     <tr class="text-center text-danger font-weight-bold font-size-12">
-                                                        <th colspan="2" class="bg-soft-dark">
+                                                        <th colspan="2" class="bg-dark-subtle">
                                                             <a class="bx-tada float-start" @click="tabIndex2--"><i class='bx bx-chevrons-left' ></i></a>
                                                             <span class="mt-2">{{s.semester}} </span>
                                                             <!-- <i @click="add(index,index2)" v-if="s.courses.length > 0" class='bx bxs-plus-circle h4 mb-n2 mt-n2 ms-2 text-muted' style="cursor: pointer;"></i> -->
@@ -162,16 +162,15 @@
         </div> 
     </b-modal>
     <Prospectus :term="term" @status="update" ref="prospectus"/>
-    <Lock ref="lock"/>
     <Status ref="status"/>
+    <Lock ref="lock"/>
 </template>
-
 <script>
 import Lock from './Lock.vue';
 import Status from './Status.vue';
 import Prospectus from './Prospectus.vue';
 export default {
-    components : { Prospectus, Lock, Status },
+    components : { Prospectus, Status, Lock },
     props: ['term'],
     data() {
         return {
@@ -237,7 +236,9 @@ export default {
     methods: {
         show(data) {
             this.course = data;
-            console.log(data);
+            if(this.course.prospectuses.length > 0){
+                this.openProspectus(this.course.prospectuses[0],0)
+            }
             this.showModal = true;
         },
         newProspectus(data){
@@ -297,3 +298,11 @@ export default {
     }
 }
 </script>
+<style>
+.nav-tabs {
+    display: none;
+}
+td input {
+    text-align: center;
+}
+</style>

@@ -16,7 +16,7 @@ class CoursesResource extends JsonResource
             'certification' => $this->certification,
             'type' => $this->type,
             'course' => $this->course->name,
-            // 'scholars' => $this->course->scholars->count(),
+            'scholars' => $this->course->scholars->count(),
             'course_id' => $this->course->id,
             'prospectuses' => $this->prospectuses
         ];

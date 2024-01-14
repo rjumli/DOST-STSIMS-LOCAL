@@ -68,28 +68,25 @@ class ViewService
     }
 
     public function counts($id){
-        // $total = Scholar::whereHas('education',function ($query) use ($id) {
-        //     $query->where('school_id',$id);
-        // })->count();
+        $total = Scholar::whereHas('education',function ($query) use ($id) {
+            $query->where('school_id',$id);
+        })->count();
 
-        $total = 0;
-        // $graduating = Scholar::whereHas('education',function ($query) use ($id) {
-        //     $query->where('school_id',$id);
-        // })->whereHas('status',function ($query) use ($id) {
-        //     $query->where('name','Graduated');
-        // })
-        // ->count();
-        $graduating = 0;
-        // $ongoing = Scholar::whereHas('education',function ($query) use ($id) {
-        //     $query->where('school_id',$id);
-        // })->whereHas('status',function ($query) use ($id) {
-        //     $query->where('type','Ongoing');
-        // })->count();
-        $ongoing = 0;
+        $graduating = Scholar::whereHas('education',function ($query) use ($id) {
+            $query->where('school_id',$id);
+        })->whereHas('status',function ($query) use ($id) {
+            $query->where('name','Graduated');
+        })
+        ->count();
+        $ongoing = Scholar::whereHas('education',function ($query) use ($id) {
+            $query->where('school_id',$id);
+        })->whereHas('status',function ($query) use ($id) {
+            $query->where('type','Ongoing');
+        })->count();
         $array = [
+            ['counts' => $ongoing,'name' => 'Ongoing Scholars', 'icon' => 'ri-account-circle-line', 'color' => 'primary'],
             ['counts' => $total, 'name' => 'Total Scholars', 'icon' => 'ri-group-2-line', 'color' => 'success'],
             ['counts' => $graduating,'name' => 'Total Graduates', 'icon' => 'bx bxs-graduation', 'color' => 'info'],
-            ['counts' => $ongoing,'name' => 'Ongoing Scholars', 'icon' => 'ri-account-circle-line', 'color' => 'primary']
         ];
         return $array;
     }
@@ -104,7 +101,8 @@ class ViewService
                 'total' => SchoolCampus::where('assigned_region','!=',$this->region)->count(),
                 'types' => $this->types()
             ],
-            'name' => $this->acronym
+            'name' => $this->acronym,
+            'active' =>  SchoolSemester::where('is_active',1)->count()
         ];
         return $array = ['statistics' => $statistics];
     }
@@ -133,9 +131,26 @@ class ViewService
                     $query->where('name','LIKE', '%'.$keyword.'%');
                 });
             })
-            ->with('course')
+            ->with('course','prospectuses')
             ->where('school_id',$id)
             ->orderBy('created_at','DESC')
+            ->paginate($counts)
+            ->withQueryString()
+        );
+        return $data;
+    }
+
+    public static function semesters($request){
+        $id = $request->id;
+        $keyword = $request->keyword;
+        $counts = $request->counts;
+
+        $data = SemestersResource::collection(
+            SchoolSemester::query()
+            ->with('semester')
+            ->where('school_id',$id)
+            ->orderBy('year','DESC')
+            ->orderBy('semester_id','DESC')
             ->paginate($counts)
             ->withQueryString()
         );

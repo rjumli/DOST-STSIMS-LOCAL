@@ -42,6 +42,9 @@ class SaveService
 
     public static function semester($request){
         $data = SchoolSemester::create(array_merge($request->all(),['is_active' => true]));
+        if($data){
+            SchoolSemester::where('school_id',$request->school_id)->where('id','!=',$data->id)->update(['is_active' => 0]);
+        }
         return $data;
     }
 

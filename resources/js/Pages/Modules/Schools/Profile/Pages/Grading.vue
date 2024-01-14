@@ -1,8 +1,8 @@
 <template>
-    <div class="input-group mb-3 mt-n1">
+    <div class="input-group mb-3 mt-3">
         <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
         <input type="text" v-model="keyword" placeholder="Search Grade" class="form-control" style="width: 30%;">
-        <b-button type="button" variant="primary" @click="add()">
+        <b-button type="button" variant="primary" @click="openAdd()">
             <i class="ri-add-circle-fill align-bottom me-1"></i> 
         </b-button>
     </div>
@@ -20,26 +20,20 @@
             </thead>
             <tbody>
                 <tr v-for="(grade, index) in gradings" v-bind:key="'a-'+index" class="mb-n4 text-center"  :class="[(!grade.is_active) ? 'table-warning' : '']">
-                    <td>
-                        {{grade.grade}} <span v-if="grade.is_failed">/ Failed</span><span v-if="grade.is_incomplete">/ Incomplete</span>
-                    </td>
-                    <td>
-                        {{grade.upper_limit}}
-                    </td>
-                    <td>
-                        {{grade.lower_limit}}
-                    </td> 
+                    <td> {{grade.grade}} <span v-if="grade.is_failed">/ Failed</span><span v-if="grade.is_incomplete">/ Incomplete</span></td>
+                    <td>{{grade.upper_limit}}</td>
+                    <td> {{grade.lower_limit}}</td> 
                     <td>
                         <span v-if="grade.is_failed" class="badge bg-success">True</span>
                         <span v-else class="badge bg-danger">False</span>
                     </td> 
                     <td>
-                         <span v-if="grade.is_incomplete" class="badge bg-success">True</span>
+                        <span v-if="grade.is_incomplete" class="badge bg-success">True</span>
                         <span v-else class="badge bg-danger">False</span>
                     </td> 
                     <td class="text-center" width="100px;">
-                        <b-button @click="edit(grade)" variant="soft-warning" v-b-tooltip.hover title="Edit" class="edit-list btn-sm me-1"><i class="ri-pencil-line align-bottom"></i> </b-button>
-                        <b-button @click="disable(grade)" variant="soft-danger" v-b-tooltip.hover title="Disable" class="edit-list btn-sm"><i class="ri-delete-bin-5-line align-bottom"></i> </b-button>
+                        <b-button @click="openEdit(grade)" variant="soft-warning" v-b-tooltip.hover title="Edit" class="edit-list btn-sm me-1"><i class="ri-pencil-line align-bottom"></i> </b-button>
+                        <b-button @click="openDisable(grade)" variant="soft-danger" v-b-tooltip.hover title="Disable" class="edit-list btn-sm"><i class="ri-delete-bin-5-line align-bottom"></i> </b-button>
                     </td>
                 </tr>
             </tbody>
@@ -49,8 +43,8 @@
     <Disable @status="message" ref="disable"/>
 </template>
 <script>
-import Disable from '../Modals/Disable.vue';
-import Grade from '../Modals/Grade.vue';
+import Grade from './Modals/Grade.vue';
+import Disable from './Modals/Disable.vue';
 import Pagination from "@/Shared/Components/Pagination.vue";
 export default {
     props: ['id','gradings'],
@@ -76,13 +70,13 @@ export default {
         },
     },
     methods: {
-        add(){
+        openAdd(){
             this.$refs.grade.show(this.id);
         },
-        disable(data){
+        openDisable(data){
             this.$refs.disable.show(data,'disable');
         },
-        edit(data){
+        openEdit(data){
             this.$refs.grade.edit(data);
         }
     }

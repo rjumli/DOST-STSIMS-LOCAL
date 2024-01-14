@@ -42,7 +42,7 @@ export default {
                     </div>
                 </div>
                 <h5 class="mb-3 mt-4">{{$page.props.flash.message }}</h5>
-                <!-- <p v-if="$page.props.flash.info" class="text-muted fs-10">{{$page.props.flash.info }}</p> -->
+                <p v-if="$page.props.flash.info" class="text-muted fs-10">{{$page.props.flash.info }}</p>
             </div>
         </div>
         <div class="modal-footer bg-light p-3 mt-5 justify-content-center">

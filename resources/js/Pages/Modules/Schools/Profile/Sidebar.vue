@@ -2,16 +2,19 @@
     <b-col lg="4">
         <b-card>
             <b-card-body style="height: calc(100vh - 320px)">
-                <b-card no-body class="mb-1 ribbon-box ribbon-fill ribbon-sm">
+                <b-card no-body class="mb-1 ribbon-box ribbon-fill ribbon-sm" v-if="active">
                     <div class="ribbon ribbon-success"><i class="ri-flashlight-fill"></i></div>
                     <b-card-body>
                         <b-link class="d-flex align-items-center" role="button" v-b-toggle.contactInitiated1>
                             <div class="flex-grow-1 ms-3">
-                                <h6 class="fs-14 mb-1">{{semester.academic_year}}</h6>
-                                <p class="text-muted mb-0">{{semester.start_at}} - {{semester.end_at}}</p>
+                                <h6 class="fs-14 mb-1">{{active.academic_year}}</h6>
+                                <p class="text-muted mb-0">{{active.start_at}} - {{active.end_at}}</p>
                             </div>
                         </b-link>
                     </b-card-body>
+                </b-card>
+                <b-card no-body class="mb-1 ribbon-box ribbon-fill ribbon-sm" v-else>
+                    <div class="alert alert-danger mb-xl-0" role="alert">No active semester as of now. Enrollment is Closed</div>
                 </b-card>
                 <hr class="text-muted mt-4"/>
                 <h6 class="fs-11 text-muted text-uppercase mb-3">Scholars Enrolled</h6>
@@ -155,7 +158,7 @@
 </template>
 <script>
 export default {
-    props: ['id'],
+    props: ['id','active'],
     data(){
         return {
             currentUrl: window.location.origin,
@@ -180,25 +183,7 @@ export default {
             return (this.counts.missed.length > 0) ? this.counts.missed.splice(0,3) : [];
         }
     },
-    created(){
-        this.fetchSemester();
-    },
     methods: {
-        fetchSemester(){
-            axios.get(this.currentUrl+'/schools',{
-                params : {
-                    id: this.id,
-                    type: 'activesemester'
-                }
-            })
-            .then(response => {
-                if(response){
-                    this.semester = response.data.active; 
-                    (this.semester) ? this.monitoring() : '';  
-                }
-            })
-            .catch(err => console.log(err));
-        },
         monitoring(){
             axios.get(this.currentUrl+'/monitoring', {
                 params: {

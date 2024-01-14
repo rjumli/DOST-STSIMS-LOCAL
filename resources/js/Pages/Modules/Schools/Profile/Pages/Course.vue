@@ -1,6 +1,5 @@
 <template>
-    <hr class="text-muted"/>
-    <b-col lg>
+    <b-col lg class="mt-3">
         <div class="input-group mb-3 mt-n1">
             <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
             <input type="text" v-model="keyword" placeholder="Search scholar" class="form-control" style="width: 30%;">
@@ -10,7 +9,7 @@
         <table class="table align-middle table-nowrap mb-0">
             <thead class="table-light fs-12">
                 <tr>
-                    <th>Name</th>
+                    <th style="width: 40%;">Name</th>
                     <th class="text-center">Scholars</th>
                     <th class="text-center">Certification</th>
                     <th class="text-center">Validity</th>
@@ -29,20 +28,20 @@
                         <span v-else class="badge bg-danger">Inactive</span>
                     </td>
                     <td class="text-end">
-                        <b-button @click="view(list)" variant="soft-primary" v-b-tooltip.hover title="View" size="sm" class="edit-list"><i class="ri-eye-fill align-bottom"></i> </b-button>
+                        <b-button @click="openView(list)" variant="soft-primary" v-b-tooltip.hover title="View" size="sm" class="edit-list"><i class="ri-eye-fill align-bottom"></i> </b-button>
                     </td>
                 </tr>
             </tbody>
         </table>
         <Pagination class="ms-2 me-2" v-if="meta" @fetch="fetch" :lists="lists.length" :links="links" :pagination="meta" />
     </div>    
-    <!-- <Course :term="term" ref="course"/> -->
+    <View :term="term" ref="view"/>
 </template>
 <script>
-// import Course from './Modals/Course.vue';
+import View from './Modals/Course/Index.vue';
 import Pagination from "@/Shared/Components/Pagination.vue";
 export default {
-    components: { Pagination },
+    components: { Pagination, View },
     props: ['id','term'],
     computed : {
         semesters : function() {
@@ -99,10 +98,8 @@ export default {
         message(){
             this.fetch();
         },
-        view(data){
-            this.$refs.course.show(data);
-            // this.course = data;
-            // this.courseView = true;
+        openView(data){
+            this.$refs.view.show(data);
         },
         openProspectus(prospectus,course,index){
             this.index = index;

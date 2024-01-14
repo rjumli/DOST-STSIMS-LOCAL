@@ -72,6 +72,12 @@ class SchoolController extends Controller
                 case 'prospectus': 
                     return $this->update->prospectus($request);
                 break;
+                case 'lock': 
+                    return $this->update->lock($request);
+                break;
+                case 'status': 
+                    return $this->update->status($request);
+                break;
             }
         });
 

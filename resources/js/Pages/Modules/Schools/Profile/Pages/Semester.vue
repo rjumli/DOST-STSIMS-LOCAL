@@ -1,12 +1,12 @@
 <template>
-    <b-col lg>
+    <b-col lg class="mt-3">
         <div class="input-group mb-3 mt-n1">
             <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
             <input type="text" v-model="keyword" placeholder="Search Academic Year" class="form-control" style="width: 30%;">
             <span @click="newGroupModal()" class="input-group-text" v-b-tooltip.hover title="Group Semester" style="cursor: pointer;"> 
                 <i class="ri-list-unordered search-icon"></i>
             </span>
-            <b-button type="button" variant="primary" @click="newModal()">
+            <b-button type="button" variant="primary" @click="openAdd()">
                 <i class="ri-add-circle-fill align-bottom me-1"></i> Create
             </b-button>
         </div>
@@ -16,9 +16,9 @@
             <thead class="table-light fs-12">
                 <tr>
                     <th>Academic Year</th>
+                    <th class="text-center">Semester</th>
                     <th class="text-center">Start at</th>
                     <th class="text-center">End at</th>
-                    <th class="text-center">Semester</th>
                     <th class="text-center">Status</th>
                     <th class="text-end"></th>
                 </tr>
@@ -26,9 +26,9 @@
             <tbody class="list form-check-all">
                 <tr v-for="list in lists" v-bind:key="list.id">
                     <td class="fs-14 fw-medium">{{list.academic_year}}</td>
+                    <td class="text-center">{{list.semester.name}}</td>
                     <td class="text-center">{{list.start_at}}</td>
                     <td class="text-center">{{list.end_at}}</td>
-                    <td class="text-center">{{list.semester.name}}</td>
                     <td class="text-center">
                         <span v-if="list.is_active" class="badge bg-success">Active</span>
                         <span v-else class="badge bg-danger">Inactive</span>
@@ -42,14 +42,13 @@
         <Pagination class="ms-2 me-2" v-if="meta" @fetch="fetch" :lists="lists.length" :links="links" :pagination="meta" />
     </div>          
     <Semester :semesters="semesters" @status="message" ref="new"/>
-    <SemesterGroup ref="group"/>
+    <!-- <SemesterGroup ref="group"/> -->
 </template>
 <script>
+import Semester from './Modals/Semester.vue';
 import Pagination from "@/Shared/Components/Pagination.vue";
-import Semester from '../Modals/Semester.vue';
-import SemesterGroup from '../Modals/SemesterGroup.vue';
 export default {
-    components: { Semester, SemesterGroup, Pagination },
+    components: { Pagination, Semester },
     props: ['dropdowns','id','term'],
     data(){
         return{
@@ -82,7 +81,7 @@ export default {
             axios.get(page_url,{
                 params : {
                     id: this.id,
-                    type: 'semesters',
+                    option: 'semesters',
                     keyword : this.keyword,
                     counts: ((window.innerHeight-600)/51)
                 }
@@ -96,7 +95,7 @@ export default {
             })
             .catch(err => console.log(err));
         },
-        newModal(){
+        openAdd(){
             this.$refs.new.show(this.id);
         },
         newGroupModal(){

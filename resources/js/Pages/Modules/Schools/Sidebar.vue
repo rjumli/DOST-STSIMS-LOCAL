@@ -6,10 +6,10 @@
                 <i class="ri-database-2-line fs-17"></i>
             </div>
             <div class="flex-grow-1 ms-3 overflow-hidden">
-                <b-progress class="animated-progress progress-sm mb-2" :max="2">
-                    <b-progress-bar :value="1" variant="primary" />
+                <b-progress class="animated-progress progress-sm mb-2" :max="statistics.inside.total">
+                    <b-progress-bar :value="statistics.active" variant="primary" />
                 </b-progress>
-                <span class="text-muted fs-12 d-block text-truncate"><b>0</b> out of <b>22</b> ongoing scholars are enrolled.</span>
+                <span class="text-muted fs-12 d-block text-truncate"><b>{{statistics.active}}</b> out of <b>{{statistics.inside.total}}</b> schools with active semester.</span>
             </div>
         </div>
         <hr class="text-muted"/>
