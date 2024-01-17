@@ -18,9 +18,15 @@ class ViewService
     }
 
     public function schools(){
-        $data = SchoolCampus::with('school')->with(['semesters' => function ($query) {
+        $data = SchoolCampus::with('school.class')->with(['semesters' => function ($query) {
             $query->with('semester')->where('is_active', 1)->first();
-        }])->where('is_active',1)->where('assigned_region',$this->code)->get();
+        }])->whereHas('scholars', function ($query) {
+            $query->whereHas('scholar', function ($query) {
+                $query->whereHas('status', function ($query) {
+                    $query->where('type', 'Ongoing');
+                });
+            });
+        })->where('is_active',1)->where('assigned_region',$this->code)->get();
         return ['schools' => SchoolResource::collection($data)];
     }
 
