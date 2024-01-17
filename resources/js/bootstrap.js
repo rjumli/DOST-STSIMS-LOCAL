@@ -11,7 +11,7 @@ window.axios = axios;
 
 import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
 import '@suadelabs/vue3-multiselect/dist/vue3-multiselect.css';
-import 'simplebar-vue/dist/simplebar.min.css';
+// import 'simplebar-vue/dist/simplebar.min.css';
 // import "flatpickr/dist/flatpickr.css";
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';

@@ -16,7 +16,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {return inertia('Index'); });
 
 Route::middleware(['auth'])->group(function () {
+    
     Route::resource('/home', App\Http\Controllers\HomeController::class);
+    Route::resource('/monitoring', App\Http\Controllers\Monitoring\IndexController::class);
+    Route::resource('/schools', App\Http\Controllers\SchoolController::class);
+    Route::resource('/settings', App\Http\Controllers\SettingController::class);
 
     Route::prefix('staffs')->group(function(){
         Route::resource('/lists', App\Http\Controllers\Staff\ListController::class);
@@ -31,8 +35,6 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/export','export');
         });
     });
-
-    Route::resource('/schools', App\Http\Controllers\SchoolController::class);
 
     Route::prefix('logs')->group(function(){
         Route::controller(App\Http\Controllers\LogController::class)->group(function () {

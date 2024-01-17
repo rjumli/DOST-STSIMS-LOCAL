@@ -72,16 +72,43 @@
                 </tr>
             </tbody>
         </table>
+        <div class="mt-auto">
+            <b-row class="g-1">
+                <b-col lg="4">
+                    <button @click="openDownload()" class="btn btn-soft-primary btn-sm w-100" type="button">
+                        <div class="btn-content">Download</div>
+                    </button>
+                </b-col>
+                <b-col lg="4">
+                    <button @click="openTruncate()" class="btn btn-soft-primary btn-sm w-100" type="button">
+                        <div class="btn-content">Truncate</div>
+                    </button>
+                </b-col>
+                <b-col lg="4">
+                    <button @click="openSync()" class="btn btn-primary btn-sm w-100" type="button">
+                        <div class="btn-content">Request</div>
+                    </button>
+                </b-col>
+            </b-row>
+        </div>
     </div>
+    <Download ref="download"/>
 </template>
 <script>
+import Download from './Modals/Download.vue';
 export default {
+    components: { Download },
     props: ['statistics'],
-     data(){
+    data(){
         return {
             options: ['Public Schools','Private Schools'],
             colors: ['text-warning','text-danger','text-primary','text-success'],
         }
     },
+    methods: {
+        openDownload(){
+            this.$refs.download.show();
+        },
+    }
 }
 </script>

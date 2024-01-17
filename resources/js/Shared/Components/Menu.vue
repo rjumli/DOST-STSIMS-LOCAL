@@ -23,7 +23,13 @@
                         <span data-key="t-dashboards">Home</span>
                     </Link>
                 </li>
-                 <li class="nav-item">
+                <li class="nav-item">
+                    <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Monitoring') }" href="/monitoring">
+                        <i class='bx bxs-webcam'></i>
+                        <span data-key="t-students">Monitoring</span>
+                    </Link>
+                </li>  
+                <li class="nav-item">
                     <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Schools') }" href="/schools">
                         <i class='ri-hotel-fill'></i>
                         <span data-key="t-dashboards">Schools</span>

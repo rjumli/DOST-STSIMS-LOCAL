@@ -33,6 +33,8 @@ class SchoolProfileRequest extends FormRequest
             ];
         }else if($this->type == 'truncate'){
             return [];
+        }else if($this->type == 'api'){
+            return [];
         }else{
             return [
                 'course_id' => 'required',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Setting;
 use App\Models\ListProgram;
 use App\Models\ListDropdown;
 use App\Models\ListAgency;
@@ -16,6 +17,7 @@ use App\Http\Resources\Dropdown\LocationResource;
 use App\Http\Resources\Dropdown\ProgramResource;
 use App\Http\Resources\Dropdown\StatusResource;
 use App\Http\Resources\Staff\IndexResource as StaffResource;
+use App\Http\Resources\SettingResource;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -47,7 +49,11 @@ class HandleInertiaRequests extends Middleware
      * @return array
      */
     public function share(Request $request): array
-    {
+    {   
+        $settings = Setting::with('agency.region','semester','trimester','quarter')->first();
+        $region_code = ($settings)? $settings->agency->region_code : NULL;
+        $semester_year = ($settings)? $settings->year : NULL;
+
         return array_merge(parent::share($request), [
             'auth' => (\Auth::check()) ? new StaffResource(\Auth::user()) : '',
             'flash' => [
@@ -62,6 +68,9 @@ class HandleInertiaRequests extends Middleware
             'statuses' => StatusResource::collection(ListStatus::all()),
             'privileges' => ListPrivilege::all(),
             'agencies' => ListAgency::all(),
+            'region_code' => $region_code,
+            'semester_year' => $semester_year,
+            'settings' => ($settings) ? new SettingResource($settings) : null
         ]);
     }
 }

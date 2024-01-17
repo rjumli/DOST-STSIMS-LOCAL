@@ -41,29 +41,33 @@ class SchoolController extends Controller
     }
 
     public function store(SchoolProfileRequest $request){
-        $result = $this->handleTransaction(function () use ($request) {
-            switch($request->type){
-                case 'truncate':
-                    return $this->truncate($request);
-                break;
-                case 'semester': 
-                    return $this->save->semester($request);
-                break;
-                case 'prospectus': 
-                    return $this->save->prospectus($request);
-                break;
-                case 'grading':
-                    return $this->save->grading($request);
-                break;
-            }
-        });
+        if($request->type == 'api'){
+            return $this->save->download();
+        }else{
+            $result = $this->handleTransaction(function () use ($request) {
+                switch($request->type){
+                    case 'truncate':
+                        return $this->truncate($request);
+                    break;
+                    case 'semester': 
+                        return $this->save->semester($request);
+                    break;
+                    case 'prospectus': 
+                        return $this->save->prospectus($request);
+                    break;
+                    case 'grading':
+                        return $this->save->grading($request);
+                    break;
+                }
+            });
 
-        return back()->with([
-            'data' => $result['data'],
-            'message' => $result['message'],
-            'info' => $result['info'],
-            'status' => $result['status'],
-        ]);
+            return back()->with([
+                'data' => $result['data'],
+                'message' => $result['message'],
+                'info' => $result['info'],
+                'status' => $result['status'],
+            ]);
+        }
     }
 
     public function update(Request $request){
