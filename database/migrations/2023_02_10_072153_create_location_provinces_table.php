@@ -18,6 +18,7 @@ return new class extends Migration
             $table->smallIncrements('id');
             $table->string('code',50)->unique();
             $table->string('name',150)->unique();
+            $table->string('old_name')->nullable();
             $table->string('region_code');
             $table->foreign('region_code')->references('code')->on('location_regions')->onDelete('cascade');
         });

@@ -50,10 +50,7 @@
                         <h5 class="fs-13 mb-0 text-dark">{{list.profile.lastname}}, {{list.profile.firstname}} {{list.profile.middlename[0]}}.</h5>
                         <p class="fs-11 text-muted mb-0">{{list.spas_id }}</p>
                     </td>
-                    <!-- <td class="text-center fs-12">
-                        {{list.address.hs_school}}
-                    </td> -->
-                        <td class="text-center">
+                    <td class="text-center">
                         <h5 class="fs-11 mb-0 text-dark">{{list.address.name}}</h5>
                         <p class="fs-11 text-muted mb-0">
                             {{(list.address.province) ? list.address.province.name+',' : ''}}
@@ -62,7 +59,7 @@
                     </td>
                     <td class="text-center">
                         <h5 class="fs-12 mb-0 text-dark">{{list.program.name}}</h5>
-                        <p class="fs-11 text-muted mb-0">{{list.subprogram.name }}</p>
+                        <p class="fs-11 text-muted mb-0">{{list.subprogram}}</p>
                     </td>
                     <td class="text-center">{{list.qualified_year}}</td>
                         <td class="text-center">
@@ -156,7 +153,7 @@ export default {
         fetch(page_url) {
             let info = {
                 'keyword': this.filter.keyword,
-                'status': (this.filter.status === '' || this.filter.status == null) ? '' : this.filter.status,
+                'status': this.filter.status,
                 'year': (this.filter.year === '' || this.filter.year == null) ? '' : this.filter.year,
                 'counts': parseInt(((window.innerHeight-350)/56)),
                 'sort': this.filter.sort,
