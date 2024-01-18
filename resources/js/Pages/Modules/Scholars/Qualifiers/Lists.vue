@@ -4,11 +4,15 @@
             <div class="input-group mb-1">
                 <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
                 <input type="text" v-model="filter.keyword" placeholder="Search Qualifier" class="form-control" style="width: 40%;">
-                <input type="text" v-model="filter.year" placeholder="Year Awarded" class="form-control" style="width: 30px;">
-                <Multiselect class="form-control" style="width:12%"
+                <!-- <input type="text" v-model="filter.year" placeholder="Year Awarded" class="form-control" style="width: 30px;"> -->
+                <Multiselect class="form-control" style="width:10%"
                  placeholder="Select Status" label="name" trackBy="name"
-                v-model="filter.status" :close-on-select="true" :canDeselect="false" :canClear="false"
+                v-model="filter.status" :close-on-select="true" 
                 :searchable="false" :options="status_list" />
+                 <Multiselect class="form-control" style="width:20%"
+                 placeholder="Select Type" label="name" trackBy="name"
+                v-model="filter.type" :close-on-select="true" 
+                :searchable="false" :options="['Undergraduate Scholarship','Junior Level Science Scholarship']" />
                 <span @click="refresh" class="input-group-text" v-b-tooltip.hover title="Refresh" style="cursor: pointer;"> 
                     <i class="bx bx-refresh search-icon"></i>
                 </span>
@@ -33,7 +37,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="list in lists" v-bind:key="list.id" :class="[(list.is_active == 0) ? 'table-warnings' : '']">
+                <tr v-for="list in lists" v-bind:key="list.id" :class="[(list.is_endorsed == 1) ? 'table-warning' : '']">
                     <td>
                         <div class="avatar-xs" v-if="list.profile.avatar == 'n/a'">
                             <span class="avatar-title rounded-circle">{{list.profile.lastname.charAt(0)}}</span>
@@ -110,12 +114,14 @@ export default {
                 subfilters: [],
                 year: null,
                 keyword: null,
-                status: 14,
-                sort: 'asc'
+                status: null,
+                sort: 'asc',
+                type: null
             },
             subfilters: [],
             flag: '',
             index: '',
+            type: null,
             pageNo: null,
         }
     },
@@ -127,6 +133,16 @@ export default {
             this.checkSearchStr(newVal)
         },
         "filter.status"(){
+            this.fetch();
+        },
+        "filter.type"(){
+            if(this.filter.type == 'Junior Level Science Scholarship'){
+                this.type = false;
+            }else if(this.filter.type == 'Undergraduate Scholarship'){
+                this.type = true;
+            }else{
+                this.type = null;
+            }
             this.fetch();
         },
     },
@@ -143,7 +159,8 @@ export default {
                 'status': (this.filter.status === '' || this.filter.status == null) ? '' : this.filter.status,
                 'year': (this.filter.year === '' || this.filter.year == null) ? '' : this.filter.year,
                 'counts': parseInt(((window.innerHeight-350)/56)),
-                'sort': this.filter.sort
+                'sort': this.filter.sort,
+                'type': this.type,
             };
 
             info = (Object.keys(info).length == 0) ? '-' : JSON.stringify(info);

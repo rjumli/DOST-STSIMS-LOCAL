@@ -46,7 +46,7 @@
                                     </div>
                                     <div class="flex-grow-1">
                                         <p class="text-muted fs-11 mb-0">Status :</p>
-                                        <span :class="'badge '+user.type.color">{{user.type.name}}</span>
+                                        <span :class="'badge '+user.status.color+' '+user.status.others">{{user.status.name}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -95,8 +95,11 @@
                         </div>
                     </div>
                     <hr class="text-muted"/>
-                    <b-form class="customform mb-2" v-if="user.type.name == 'Waiting' || user.type.name == 'Deferment'">
+                    <b-form class="customform mb-2" v-if="user.status.name == 'Waiting' || user.status.name == 'Deferment'">
                         <div class="row g-2">
+                            <div class="col-md-12" v-if="user.status.name == 'Deferment'">
+                                <div class="alert alert-dark mb-xl-0" role="alert"><b>REASON:</b> {{user.deferment.reason}}</div>
+                            </div>
                             <div class="col-md-12">
                                 <Multiselect class="form-control"
                                 placeholder="Select Action"
@@ -129,7 +132,29 @@
                                     <div class="col-md-12 mb-2">
                                         <div class="alert alert-info mb-xl-0" role="alert">Add a qualifier to the scholar list and make it downloadable via API.</div>
                                     </div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <label v-if="!user.school">School: <span v-if="form.errors" v-text="form.errors.school_id" class="haveerror"></span></label>
+                                        <div v-if="user.school" class="form-floating">
+                                            <input type="text" v-model="user.school" class="form-control" readonly>
+                                            <label :class="(form.errors) ? (form.errors.school_id) ? 'text-danger' : '' : ''">School</label>
+                                        </div>
+                                        <Multiselect class="form-control" @search-change="fetchSchool"
+                                        placeholder="Select School" label="name" trackBy="name"
+                                        v-model="school" :close-on-select="true" 
+                                        :searchable="true" :options="schools"/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label v-if="!user.course">Course: <span v-if="form.errors" v-text="form.errors.course_id" class="haveerror"></span></label>
+                                        <div v-if="user.course" class="form-floating">
+                                            <input type="text" v-model="user.course" class="form-control" readonly>
+                                            <label :class="(form.errors) ? (form.errors.course_id) ? 'text-danger' : '' : ''">Course</label>
+                                        </div>
+                                        <Multiselect class="form-control"
+                                            placeholder="Select Course" label="course" trackBy="course"
+                                            v-model="course" :close-on-select="true" 
+                                            :searchable="false" :options="courses"/>
+                                    </div>
+                                    <!-- <div class="col-md-12">
                                         <label>School: <span v-if="form.errors" v-text="form.errors.school_id" class="haveerror"></span></label>
                                         <Multiselect class="form-control" @search-change="fetchSchool"
                                         placeholder="Select School" label="name" trackBy="name"
@@ -142,13 +167,13 @@
                                             placeholder="Select Course" label="course" trackBy="course"
                                             v-model="course" :close-on-select="true" 
                                             :searchable="false" :options="courses"/>
-                                    </div>
-                                    <div class="col-md-6" style="margin-top: 18px;">
+                                    </div> -->
+                                    <!-- <div class="col-md-6" style="margin-top: 18px;">
                                         <div class="form-group">
                                             <label>Account No.: <span v-if="form.errors" v-text="form.errors.account_no" class="haveerror"></span></label>
                                             <input type="text" class="form-control" v-model="account_no">
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="col-md-12 mt-3">
                                         <div class="alert alert-warning mb-xl-0" role="alert">Please double-check all fields before saving. <b>Once submitted, changes cannot be undone.</b></div>
                                     </div>
@@ -157,15 +182,43 @@
                                     <div class="col-md-12 mb-2">
                                         <div class="alert alert-info mb-xl-0" role="alert">Endorse to the assigned region that handles the school.</div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label>School: <span v-if="form.errors" v-text="form.errors.school_id" class="haveerror"></span></label>
+                                    <!-- <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="text" v-model="user.school" class="form-control" readonly>
+                                            <label :class="(form.errors) ? (form.errors.school_id) ? 'text-danger' : '' : ''">School</label>
+                                        </div>
                                         <Multiselect class="form-control" @search-change="fetchSchool"
                                         placeholder="Select School" label="name" trackBy="name"
                                         v-model="school" :close-on-select="true" 
                                         :searchable="true" :options="schools"/>
                                     </div>
                                     <div class="col-md-6">
-                                        <label>Course: <span v-if="form.errors" v-text="form.errors.course_id" class="haveerror"></span></label>
+                                        <div class="form-floating">
+                                            <input type="text" v-model="user.course" class="form-control" readonly>
+                                            <label :class="(form.errors) ? (form.errors.course_id) ? 'text-danger' : '' : ''">Course</label>
+                                        </div>
+                                        <Multiselect class="form-control"
+                                            placeholder="Select Course" label="course" trackBy="course"
+                                            v-model="course" :close-on-select="true" 
+                                            :searchable="false" :options="courses"/>
+                                    </div> -->
+                                    <div class="col-md-6">
+                                        <label v-if="!user.school">School: <span v-if="form.errors" v-text="form.errors.school_id" class="haveerror"></span></label>
+                                        <div v-if="user.school" class="form-floating">
+                                            <input type="text" v-model="user.school" class="form-control" readonly>
+                                            <label :class="(form.errors) ? (form.errors.school_id) ? 'text-danger' : '' : ''">School</label>
+                                        </div>
+                                        <Multiselect class="form-control" @search-change="fetchSchool"
+                                        placeholder="Select School" label="name" trackBy="name"
+                                        v-model="school" :close-on-select="true" 
+                                        :searchable="true" :options="schools"/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label v-if="!user.course">Course: <span v-if="form.errors" v-text="form.errors.course_id" class="haveerror"></span></label>
+                                        <div v-if="user.course" class="form-floating">
+                                            <input type="text" v-model="user.course" class="form-control" readonly>
+                                            <label :class="(form.errors) ? (form.errors.course_id) ? 'text-danger' : '' : ''">Course</label>
+                                        </div>
                                         <Multiselect class="form-control"
                                             placeholder="Select Course" label="course" trackBy="course"
                                             v-model="course" :close-on-select="true" 
@@ -178,10 +231,10 @@
                             </div>
                         </div>
                     </b-form>
-                    <b-form class="customform mb-2" v-if="user.type.name == 'Not Avail'">
+                    <b-form class="customform mb-n4" v-if="user.status.name == 'Not Avail'">
                         <div class="row g-2">
                             <div class="col-md-12 mb-2">
-                                <div class="alert alert-dark mb-xl-0" role="alert"><b>Reason:</b> {{user.notavail.reason}}</div>
+                                <div class="alert alert-danger mb-xl-0" role="alert"><b>Reason:</b> {{user.notavail.reason}}</div>
                             </div>
                         </div>
                     </b-form>
@@ -243,7 +296,7 @@
         </div>
         <template v-slot:footer>
             <b-button @click="hide()" variant="light" block>Cancel</b-button>
-            <b-button @click="create('ok')" v-if="type != null || user.type.name == 'Deferment'" variant="primary" :disabled="form.processing" block>Proceed</b-button>
+            <b-button @click="create('ok')" v-if="type != null || user.status.name == 'Deferment'" variant="primary" :disabled="form.processing" block>Proceed</b-button>
         </template>
     </b-modal>
     <Confirm @status="hide()" ref="confirm"/>
@@ -286,7 +339,7 @@ export default {
     },
     computed: {
         waiting_status : function() {
-            const excludedStatusNames = (this.user.type.name == 'Deferment') ? ['Enrolled','Waiting','Deferment'] : ['Enrolled','Waiting'];
+            const excludedStatusNames = (this.user.status.name == 'Deferment') ? ['Enrolled','Waiting','Deferment'] : ['Enrolled','Waiting'];
             return this.statuses.filter(x => !excludedStatusNames.includes(x.name));
         }
     },
@@ -299,6 +352,7 @@ export default {
         show(data){
             this.type = null;
             this.user = data;
+            (this.user.is_endorsed) ? this.type = 'Endorse Qualifier' : ''; 
             this.showModal = true;
         },
         create(){
