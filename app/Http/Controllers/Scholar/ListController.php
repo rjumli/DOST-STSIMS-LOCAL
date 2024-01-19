@@ -34,6 +34,9 @@ class ListController extends Controller
             case 'lists':
                 return $this->view->lists($request);
             break;
+            case 'enrollments':
+                return $this->view->enrollments($request);
+            break;
             case 'search':
                 return $this->search($request);
             break;

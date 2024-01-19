@@ -7,7 +7,7 @@ use App\Models\Scholar;
 use App\Models\ScholarProfile;
 use App\Models\ScholarAddress;
 use App\Models\ScholarEducation;
-// use App\Models\ScholarEnrollment;
+use App\Models\ScholarEnrollment;
 // use App\Models\ScholarEnrollmentList;
 // use App\Models\ScholarEnrollmentBenefit;
 // use App\Models\ScholarTracer;
@@ -46,7 +46,7 @@ class TruncateService
         ScholarAddress::truncate();
         ScholarProfile::truncate();
         // ScholarTracer::truncate();
-        // $this->enrollment();
+        $this->enrollment();
         Scholar::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
         return back()->with([
@@ -72,9 +72,9 @@ class TruncateService
 
     public function enrollment(){
         ScholarEnrollment::truncate();
-        ScholarEnrollmentList::truncate();
-        ScholarEnrollmentBenefit::truncate();
-        Release::truncate();
+        // ScholarEnrollmentList::truncate();
+        // ScholarEnrollmentBenefit::truncate();
+        // Release::truncate();
     }
     
     public function semesters(){

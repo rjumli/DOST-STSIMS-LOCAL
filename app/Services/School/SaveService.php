@@ -9,6 +9,7 @@ use App\Models\ListDropdown;
 use App\Models\SchoolGrading;
 use App\Models\SchoolSemester;
 use App\Models\SchoolProspectus;
+use App\Jobs\NewSemester;
 use App\Traits\HandlesCurl;
 
 class SaveService
@@ -57,6 +58,7 @@ class SaveService
         $data = SchoolSemester::create(array_merge($request->all(),['is_active' => true]));
         if($data){
             SchoolSemester::where('school_id',$request->school_id)->where('id','!=',$data->id)->update(['is_active' => 0]);
+            NewSemester::dispatch($data->id)->delay(now()->addSeconds(10));
         }
         return $data;
     }

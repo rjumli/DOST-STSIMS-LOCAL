@@ -6,6 +6,7 @@ use App\Models\Scholar;
 use App\Models\ScholarProfile;
 use App\Models\ScholarAddress;
 use App\Models\ScholarEducation;
+use App\Jobs\NewScholar;
 use App\Traits\HandlesCurl;
 
 class ApiService
@@ -58,12 +59,10 @@ class ApiService
                         unset($education->id);
                         $profile = $sub['profile'];
                         unset($profile->id);
-                
 
-                        // dd($address,$education,$profile);
                         \DB::beginTransaction();
                         $q = Scholar::insertOrIgnore($arr);
-                        Scholar::where('spas_id',$spas_id)->where('subprogram_id',26)->update(['is_undergrad' => 0]);
+                        // Scholar::where('spas_id',$spas_id)->where('subprogram_id',26)->update(['is_undergrad' => 0]);
                         $isko =  Scholar::select('id')->where('spas_id',$spas_id)->first();
 
                         if($q){
@@ -82,6 +81,7 @@ class ApiService
                                     $education['is_synced'] = 1;
                                     $c = ScholarEducation::insertOrIgnore($education);
                                     if($c){
+                                        NewScholar::dispatch($isko->id)->delay(now()->addSeconds(10));
                                         array_push($success,$spas_id);
                                         \DB::commit();
                                     }else{

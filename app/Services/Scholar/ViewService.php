@@ -4,10 +4,13 @@ namespace App\Services\Scholar;
 
 use App\Models\Scholar;
 use App\Models\ScholarEducation;
+use App\Models\ScholarEnrollment;
 use App\Models\ScholarProfile;
 use App\Models\ScholarAddress;
 use App\Http\Resources\Scholar\IndexResource;
+use App\Http\Resources\Enrollment\ListResource;
 use Laravel\Sanctum\PersonalAccessToken;
+
 
 class ViewService
 {
@@ -97,6 +100,35 @@ class ViewService
             'sync_no' => $total
         ];
         return $array;
+    }
+
+    public function enrollments($request){
+        $id = $request->id;
+        $data = ScholarEnrollment::
+        withWhereHas('semester', function ($query) {
+            $query->select('id','academic_year','semester_id','start_at','end_at')
+            ->withWhereHas('semester', function ($query) {
+                $query->select('id','name');
+            });
+        })
+        ->withWhereHas('level', function ($query) {
+            $query->select('id','name','others');
+        })
+        // ->withWhereHas('lists', function ($query){
+        //     $query->select('id','enrollment_id','code','subject','unit','grade','is_failed');
+        // })
+        ->withWhereHas('benefits', function ($query){
+            $query->select('id','enrollment_id','amount','month','benefit_id','status_id')
+            ->withWhereHas('benefit', function ($query){
+                $query->select('id','name','type','short','regular_amount','summer_amount');
+            })
+            ->withWhereHas('status', function ($query){
+                $query->select('id','name','color','others');
+            });
+        })
+        ->where('scholar_id',$id)
+        ->get();
+        return ListResource::collection($data);
     }
 
     public function api($request){

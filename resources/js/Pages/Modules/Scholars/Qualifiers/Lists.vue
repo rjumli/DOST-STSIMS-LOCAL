@@ -59,7 +59,7 @@
                     </td>
                     <td class="text-center">
                         <h5 class="fs-12 mb-0 text-dark">{{list.program.name}}</h5>
-                        <p class="fs-11 text-muted mb-0">{{list.subprogram}}</p>
+                        <p class="fs-11 text-muted mb-0">{{list.subprogram1}}</p>
                     </td>
                     <td class="text-center">{{list.qualified_year}}</td>
                         <td class="text-center">

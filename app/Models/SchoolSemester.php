@@ -35,15 +35,15 @@ class SchoolSemester extends Model
         return $this->hasMany('App\Models\ScholarEnrollment', 'semester_id');
     } 
 
-    public function getStartAtAttribute($value)
-    {
-        return date('M Y', strtotime($value));
-    }
+    // public function getStartAtAttribute($value)
+    // {
+    //     return date('M Y', strtotime($value));
+    // }
 
-    public function getEndAtAttribute($value)
-    {
-        return date('M Y', strtotime($value));
-    }
+    // public function getEndAtAttribute($value)
+    // {
+    //     return date('M Y', strtotime($value));
+    // }
 
     public function getUpdatedAtAttribute($value)
     {

@@ -24,7 +24,6 @@ class SaveService
             'user' => $request->user,
             'school_id' => $request->school_id,
             'course_id' => $request->course_id,
-            'account_no' => $request->account_no,
             'type' => $request->type
         );
         $data = $this->sender($postData);

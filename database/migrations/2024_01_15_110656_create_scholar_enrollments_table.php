@@ -29,8 +29,6 @@ return new class extends Migration
             $table->foreign('level_id')->references('id')->on('list_dropdowns')->onDelete('cascade');
             $table->bigInteger('scholar_id')->unsigned()->index();
             $table->foreign('scholar_id')->references('id')->on('scholars')->onDelete('cascade');
-            $table->tinyInteger('status_id')->unsigned()->nullable();
-            $table->foreign('status_id')->references('id')->on('list_statuses')->onDelete('cascade');
             $table->bigInteger('added_by')->unsigned()->nullable();
             $table->foreign('added_by')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
