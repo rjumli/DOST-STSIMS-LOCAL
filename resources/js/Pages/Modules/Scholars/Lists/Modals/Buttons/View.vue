@@ -155,63 +155,6 @@
                         </tr>
                     </tbody>
                 </table>
-                <!-- <div class="row">
-                    <div class="col-md-12 mt-0">
-                        <span class="fw-semibold fs-12">Scholar Information</span>
-                        <hr class="text-muted"/>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="d-flex mt-0">
-                            <div class="flex-shrink-0 avatar-xs align-self-center me-3">
-                                <div class="avatar-title bg-light rounded-circle fs-16 text-primary">
-                                    <i class="ri-service-fill"></i>
-                                </div>
-                            </div>
-                            <div class="flex-grow-1 overflow-hidden">
-                                <p class="mb-1 fs-12 text-muted">Status :</p> <span :class="'badge '+user.status.color+' '+user.status.others">{{user.status.name}}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="d-flex mt-3">
-                            <div class="flex-shrink-0 avatar-xs align-self-center me-3">
-                                <div class="avatar-title bg-light rounded-circle fs-16 text-primary">
-                                    <i class="ri-building-fill"></i>
-                                </div>
-                            </div>
-                            <div class="flex-grow-1 overflow-hidden">
-                                <p class="mb-1 fs-12 text-muted">School :</p><h6 class="text-truncate mb-0"> {{user.education.school.name}} </h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="d-flex mt-3">
-                            <div class="flex-shrink-0 avatar-xs align-self-center me-3">
-                                <div class="avatar-title bg-light rounded-circle fs-16 text-primary">
-                                    <i class="mdi mdi-school"></i></div>
-                            </div>
-                            <div class="flex-grow-1 overflow-hidden">
-                                <p class="mb-1 fs-12 text-muted">Course :</p> <h6 class="text-truncate mb-0"> {{user.education.course.name}} </h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="d-flex mt-3">
-                            <div class="flex-shrink-0 avatar-xs align-self-center me-3">
-                                <div class="avatar-title bg-light rounded-circle fs-16 text-primary">
-                                    <i class="ri-calendar-fill"></i></div>
-                            </div>
-                            <div class="flex-grow-1 overflow-hidden">
-                                <p class="mb-1 fs-12 text-muted">Level :</p> <h6 class="text-truncate mb-0"> {{user.education.level.name}} <span class="text-muted fs-11">({{user.education.level.others}})</span></h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12 mt-4">
-                        <hr class="text-muted"/>
-                        <span class="fw-semibold fs-12">Location Information</span>
-                        <hr class="text-muted"/>
-                    </div>
-                </div> -->
             </div>
             <div class="col-md-9 mt-n2" >
                 <div class="row mb-4">
@@ -268,7 +211,7 @@
                                 </div>
                                 <div class="flex-grow-1">
                                     <p class="text-muted fs-11 mb-1">Total Received :</p>
-                                    <h5 class="fs-13 mb-0">1231</h5>
+                                    <h5 class="fs-13 mb-0">{{ total }}</h5>
                                 </div>
                             </div>
                         </div>
@@ -277,48 +220,10 @@
                 <div class="mb-3 mt-n2">
                     <BTabs nav-class="nav-pills nav-custom nav-custom-light" pills small>
                         <BTab title="Enrollments">
-                            <hr class="text-muted"/>
-                            <table class="table tablez table-bordered table-nowrap align-middle mb-0 mt-2">
-                                <thead class="table-light">
-                                    <tr class="fs-11">
-                                        <th class="text-center" width="5%">#</th>
-                                        <th class="text-center" width="20%">Academic Year</th>
-                                        <th class="text-center" width="20%">Level</th>
-                                        <th class="text-center" width="15%">Grades Submitted</th>
-                                        <th class="text-center" width="15%">Benefits Received</th>
-                                        <th class="text-center" width="15%">Status</th>
-                                        <th></th>
-                                    </tr>
-                                </thead> 
-                                <tbody>
-                                    <tr class="font-size-11" v-for="(list,index) in enrollments" v-bind:key="index">
-                                        <td class="text-center">{{index+1}}</td>
-                                        <td class="text-center fs-12">{{list.semester.academic_year}} <span class="text-muted">| {{list.semester.semester.name}}</span></td>
-                                        <td class="text-center fs-12">{{list.level}}</td>
-                                        <!-- <td class="text-center fs-12">{{checkGrades(list.grades)}}</td> -->
-                                        <td class="text-center fs-11 text-muted">No Prospectus</td>
-                                        <td class="text-center fs-12">{{checkBenefits(list.benefits)}}</td>
-                                        <td class="text-center">
-                                            <span v-if="!list.is_completed"><i class="text-danger ri-close-circle-fill" v-b-tooltip.hover title="Grades and Benefits not completed"></i></span>
-                                            <span v-else><i class="text-success ri-checkbox-circle-fill" v-b-tooltip.hover title="Grades and Benefits completed"></i></span>
-                                        </td>
-                                        <td>
-                                            <button @click="viewGrades(list)" class="btn btn-sm btn-label me-1" :class="(list.is_grades_completed == 1) ? 'btn-success' : 'btn-light' " type="button">
-                                                <div class="btn-content"><i class="ri-eye-line label-icon align-middle fs-12 me-2"></i>Grades</div>
-                                            </button>
-                                            <button @click="viewBenefits(list)" class="btn btn-sm btn-label" :class="(list.is_benefits_released == 1) ? 'btn-success' : 'btn-light' " type="button">
-                                                <div class="btn-content"><i class="ri-eye-line label-icon align-middle fs-12 me-2"></i>Benefits</div>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <Enrollment ref="enrollment" @total="handleTotal"/>
                         </BTab>
-                        <BTab title="Financial Benefits">
-                        
-                        </BTab>  
-                        <BTab title="Tracers">
-                            
+                        <BTab v-if="user.status.name == 'Graduated'" title="Tracers">
+                            <Tracer :user="user" ref="tracer"/>
                         </BTab>
                         <BTab title="Overview">
                             
@@ -330,7 +235,10 @@
     </b-modal>
 </template>
 <script>
+import Tracer from './Pages/Tracer.vue';
+import Enrollment from './Pages/Enrollment.vue';
 export default {
+    components: { Enrollment, Tracer },
     data(){
         return {
             currentUrl: window.location.origin,
@@ -348,7 +256,7 @@ export default {
                 address: { municipality: '', province: '', region: ''}
             },
             prospectuses: [],
-            enrollments: []
+            total: 0
         }
     },
     methods: {
@@ -356,28 +264,11 @@ export default {
             this.user = user;
             this.user.address = this.user.addresses[0];
             this.prospectuses = this.user.education.info.prospectus;
-            this.fetch();
+            this.$refs.enrollment.fetch(this.user.id);
             this.showModal = true;
         },
-        fetch(){
-            axios.get(this.currentUrl+'/scholars/listing', {
-                params: {
-                    id: this.user.id,
-                    option: 'enrollments'
-                }
-            })
-            .then(response => {
-                this.enrollments = response.data.data;
-            })
-            .catch(err => console.log(err));
-        },
-        checkBenefits(lists){
-            const released = lists.reduce((acc, val) => (val.status_id == 13)  ? acc + 1 : acc, 0);
-            return released +' of '+lists.length;
-        },
-        checkGrades(lists){
-            const count = lists.reduce((acc, val) => val.grade != null ? acc + 1 : acc, 0);
-            return count +' of '+lists.length;
+        handleTotal(total) {
+            this.total = total;
         },
         hide(){
             this.showModal = false;

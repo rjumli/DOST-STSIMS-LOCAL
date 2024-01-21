@@ -70,6 +70,11 @@ class Scholar extends Model
         return $this->belongsTo('App\Models\ListDropdown', 'category_id', 'id');
     } 
 
+    public function enrollments()
+    {
+        return $this->hasMany('App\Models\ScholarEnrollment', 'scholar_id')->orderBy('created_at','DESC');
+    } 
+
     public function getUpdatedAtAttribute($value)
     {
         return date('M d, Y g:i a', strtotime($value));

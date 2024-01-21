@@ -19,6 +19,7 @@ use App\Http\Resources\DefaultResource;
 use App\Http\Resources\Dropdown\LocationResource;
 use App\Http\Resources\Dropdown\SchoolResource;
 use App\Http\Resources\Dropdown\CourseResource;
+use App\Http\Resources\Dropdown\SubcourseResource;
 use App\Http\Resources\Dropdown\CourseListResource;
 // use App\Http\Resources\School\Search\SchoolResource;
 
@@ -77,8 +78,12 @@ class ListController extends Controller
             $query->where('id',$id);
         })
         ->get();
-
         return CourseResource::collection($data);
+    }
+
+    public function subcourses($school,$course){
+        $data = SchoolCourse::where('school_id',$school)->where('course_id',$course)->get();
+        return SubcourseResource::collection($data);
     }
 
     public function course_list(Request $request){

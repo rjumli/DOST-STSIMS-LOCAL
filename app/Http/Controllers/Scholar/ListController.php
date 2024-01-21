@@ -74,6 +74,24 @@ class ListController extends Controller
         }
     }
 
+    public function update(Request $request){
+        $result = $this->handleTransaction(function () use ($request) {
+            switch($request->type){
+                case 'prospectus': 
+                    return $this->save->prospectus($request);
+                break;
+            }
+        });
+
+        return back()->with([
+            'data' => $result['data'],
+            'message' => $result['message'],
+            'info' => $result['info'],
+            'status' => $result['status'],
+            'type' => $request->type, 
+        ]);
+    }
+
     public function export()
     {
         return Excel::download(new EntryExport, 'users.xls');

@@ -14,7 +14,7 @@ class ListResource extends JsonResource
             'is_grades_completed' => $this->is_grades_completed,
             'is_completed' => $this->is_completed,
             'attachment' => json_decode($this->attachment,true),
-            // 'subjects' => $this->subjects,
+            'subjects' => $this->subjects,
             'benefits' => $this->benefits,
             'level' => $this->level->others,
             'semester' => $this->semester,

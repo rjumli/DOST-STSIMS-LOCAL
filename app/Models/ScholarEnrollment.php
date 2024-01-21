@@ -12,11 +12,6 @@ class ScholarEnrollment extends Model
     protected $fillable = [
         'semester_id', 'level_id', 'scholar_id', 'added_by','is_enrolled','is_delayed','is_checked','is_missed','is_grades_completed','is_benefits_released','is_completed','is_locked', 'attachment'
     ];
-
-    public function lists()
-    {
-        return $this->hasMany('App\Models\ScholarEnrollmentList', 'enrollment_id');
-    } 
     
     public function scholar()
     {
@@ -46,6 +41,11 @@ class ScholarEnrollment extends Model
     public function benefits()
     {
         return $this->hasMany('App\Models\ScholarEnrollmentBenefit', 'enrollment_id');
+    } 
+
+    public function subjects()
+    {
+        return $this->hasMany('App\Models\ScholarEnrollmentSubject', 'enrollment_id');
     } 
 
     public function semester()

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\Scholar;
+namespace App\Http\Resources\Enrollment;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -14,13 +14,14 @@ class EducationResource extends JsonResource
         
         return [
             'id' => $this->id,
+            'scholar_id' => $this->scholar_id,
             'is_completed' => $this->is_completed,
             'school' => ($this->school == null) ? $info->school : new SchoolResource($this->school),
             'course' => ($this->course == null) ? $info->course : $this->course,
             'subcourse' => $this->subcourse,
-            'level' => ($this->level == null) ? '-' : $this->level,
-            'award' => ($this->award == null) ? '-' : $this->award,
-            'graduated_year' => ($this->graduated_year == null) ? '-' : $this->graduated_year,
+            'level' => ($this->level == null) ? 'n/a' : $this->level,
+            'award' => ($this->award == null) ? 'n/a' : $this->award,
+            'graduated_year' => ($this->graduated_year == null) ? 'n/a' : $this->graduated_year,
             'info' => $info,
             'has_school' => ($this->school == null) ? false : true,
             'has_level' => ($this->level == null) ? false : true,

@@ -9,7 +9,7 @@ use App\Models\ScholarAddress;
 use App\Models\ScholarEducation;
 use App\Models\ScholarEnrollment;
 // use App\Models\ScholarEnrollmentList;
-// use App\Models\ScholarEnrollmentBenefit;
+use App\Models\ScholarEnrollmentBenefit;
 // use App\Models\ScholarTracer;
 use App\Models\Release;
 use App\Models\AccountingAllotment;
@@ -73,7 +73,7 @@ class TruncateService
     public function enrollment(){
         ScholarEnrollment::truncate();
         // ScholarEnrollmentList::truncate();
-        // ScholarEnrollmentBenefit::truncate();
+        ScholarEnrollmentBenefit::truncate();
         // Release::truncate();
     }
     

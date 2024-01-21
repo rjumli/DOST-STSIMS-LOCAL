@@ -61,6 +61,7 @@ class HandleInertiaRequests extends Middleware
                 'message' => session('message'),
                 'info' => session('info'),
                 'status' => session('status'),
+                'type' => session('type')
             ],
             'regions' => LocationResource::collection(LocationRegion::all()),
             'dropdowns' => ListResource::collection(ListDropdown::all()),

@@ -52,13 +52,13 @@
                         <div class="d-flex align-items-center">
                             <div class="flex-shrink-0 chat-user-img online user-own-img align-self-center me-n1 ms-n2">
                                 <img :src="currentUrl+'/imagess/avatars/'+user.profile.avatar" class="rounded-circle avatar-xs" alt="">
-                                <span class="user-status" :style="(user.profile.sex == 'M') ? 'background-color: #5cb0e5;' : 'background-color: #e55c7f;'"></span>
+                                <span class="user-status" :style="(user.profile.sex == 'Male') ? 'background-color: #5cb0e5;' : 'background-color: #e55c7f;'"></span>
                             </div>
                         </div>
                     </td>
                     <td>
                         <h5 class="fs-12 mb-0 fw-semibold">{{user.profile.name}}</h5>
-                        <p class="fs-11 text-muted mb-0">{{(user.spas_id) ? user.spas_id : user.stsims_id}} / {{user.profile.account_no}}</p>
+                        <p class="fs-11 text-muted mb-0">{{(user.spas_id) ? user.spas_id : user.stsims_id}}</p>
                     </td>
                     <td class="fs-12 text-center">{{user.program}}</td>
                     <td class="fs-12 text-center">{{user.awarded_year}}</td>

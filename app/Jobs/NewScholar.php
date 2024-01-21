@@ -29,7 +29,10 @@ class NewScholar implements ShouldQueue
     public function handle(): void
     {
         if($this->id != null){
-            $scholar = Scholar::with('education')->where('id',$this->id)->first();
+            $scholar = Scholar::with('education')->where('id',$this->id)
+            ->whereHas('status',function ($query){
+                $query->where('type','ongoing');
+            })->first();
             if($scholar){
                 $awarded_year = $scholar->awarded_year;
                 $school_id = $scholar->education->school_id;
