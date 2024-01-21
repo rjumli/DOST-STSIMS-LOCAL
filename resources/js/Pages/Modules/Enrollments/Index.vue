@@ -39,6 +39,10 @@ export default {
         showEnrollment(info,data){
             this.show = 'enrollment';
             this.$nextTick(function(){ this.$refs.enrollment.set(info,data) });
+        },
+        showAssessment(data,gradings){
+            this.show = 'assessment';
+            this.$nextTick(function(){ this.$refs.assessment.set(data,gradings) });
         }
     }
 }

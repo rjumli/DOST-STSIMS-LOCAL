@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Traits\HandlesTransaction;
 use App\Services\Enrollment\ViewService;
 use App\Services\Enrollment\SaveService;
+use App\Http\Requests\EnrollmentRequest;
 
 class EnrollmentController extends Controller
 {
@@ -35,12 +36,33 @@ class EnrollmentController extends Controller
         }
     }
 
+    public function store(EnrollmentRequest $request){
+        $result = $this->handleTransaction(function () use ($request) {
+            switch($request->type){
+                case 'enrollment':
+                    return $this->save->enrollment($request);
+                break;
+                case 'grade':
+                    return $this->save->grade($request);
+                break;
+                case 'lock':
+                    return $this->save->lock($request);
+                break;
+            }
+        });
+
+        return back()->with([
+            'data' => $result['data'],
+            'message' => $result['message'],
+            'info' => $result['info'],
+            'status' => $result['status'],
+            'type' => $request->type
+        ]);
+    }
+
     public function update(Request $request){
         $result = $this->handleTransaction(function () use ($request) {
             switch($request->type){
-                case 'enrollment': 
-                    return $this->view->enrollment($request);
-                break;
                 case 'switch': 
                     return $this->save->switch($request);
                 break;

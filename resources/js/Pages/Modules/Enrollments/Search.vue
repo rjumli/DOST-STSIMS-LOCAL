@@ -40,7 +40,7 @@ export default {
         checkSearchStr: _.debounce(function (string) {
             this.keyword = string;
             this.search();
-        }, 1000),
+        }, 500),
         search(){
             axios.get('/enrollments', {
                 params: {

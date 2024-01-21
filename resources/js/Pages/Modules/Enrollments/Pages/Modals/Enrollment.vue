@@ -1,5 +1,54 @@
 <template>
-
+     <b-modal v-model="showModal" title="Confirm Enrollment" header-class="p-3 bg-light" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>    
+        <b-form class="customform mb-2">
+            <div class="row g-1">
+                <div class="col-lg-12 mb-n1">
+                    <div class="form-floating">
+                        <input type="text" v-model="ay" class="form-control" readonly>
+                        <label>Academic Year</label>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-floating">
+                        <input type="text" v-model="year" class="form-control" readonly>
+                        <label>Year Level</label>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-floating">
+                        <input type="text" v-model="semester" class="form-control" readonly>
+                        <label>Semester</label>
+                    </div>
+                </div>
+                <div class="col-lg-12 mt-n2">
+                    <hr class="text-muted"/>
+                </div>
+                <!-- <div class="col-md-12 mt-n1 mb-1" v-if="errors">
+                    <div class="alert alert-warning mb-xl-0 fs-10" role="alert">
+                        <ul class="list-group">
+                            <li class="list-group-item text-danger" v-for="(error,index) in errors" v-bind:key="index"><i class="mdi mdi-check-bold align-middle lh-1 me-2"></i> 
+                                {{ error }} 
+                            </li>
+                        </ul>
+                    </div>
+                </div> -->
+                <div class="col-lg-12 mt-n2">
+                    <p class="fs-11 mb-1" :class="[($page.props.errors['files.'+0]) ? 'text-danger' : 'text-muted']">Please attach Certificate of Registration.</p>
+                    <input multiple type="file" @change="uploadFieldChange" class="form-control mb-n2" style="width: 100%; height: auto;"/>
+                </div>
+                <div class="col-lg-12">
+                    <hr class="text-muted"/>
+                </div>
+                <div class="col-md-12 mt-n1 mb-n2">
+                    <div class="alert alert-warning text-center mb-xl-0 fs-12" role="alert"><b>Are you sure you want to submit enrollment?</b></div>
+                </div>
+            </div>
+        </b-form>
+        <template v-slot:footer>
+            <b-button @click="hide()" variant="light" block>Cancel</b-button>
+            <b-button @click="create('ok')" variant="primary" :disabled="form.processing" block>Confirm</b-button>
+        </template>
+    </b-modal>
 </template>
 <script>
 export default {
@@ -7,12 +56,19 @@ export default {
         return {
             showModal: false,
             value: '',
+            year: '',
+            semester: '',
+            ay: '',
             form: {},
             attachments: [],
+            errors: []
         }
     },
     methods: {
-        set(data){
+        set(data,ay,year,semester){
+            this.year = year;
+            this.ay = ay;
+            this.semester = semester;
             this.value = data;
             this.showModal = true;
         },

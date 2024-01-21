@@ -23,7 +23,7 @@
             <li class="mt-n3"><i class="mdi mdi-school-outline me-2 align-middle text-primary fs-16"></i><span class="fs-12">{{scholar.education.course.name}}</span></li>
             <li v-if="scholar.education.school.semester">
                 <div v-if="!scholar.education.school.is_enrolled" class="alert alert-warning alert-dismissible alert-label-icon rounded-label" role="alert">
-                    <i class="ri-alert-line label-icon"></i>Scholar is not Enrolled 
+                    <i class="ri-alert-line label-icon"></i>Scholar is not Enrolled
                 </div>
                 <div v-else class="alert alert-secondary alert-dismissible alert-label-icon rounded-label" role="alert">
                     <i class="ri-check-double-line label-icon"></i>Scholar is currently enrolled 
@@ -77,7 +77,7 @@ export default {
         return {
             currentUrl: window.location.origin,
             show: null,
-            scholar: null,
+            scholar: null
         }
     },
     computed: {
@@ -98,7 +98,18 @@ export default {
                         case 'switch':
                             this.scholar.education = val.data.data;
                         break;
+                        case 'enrollment':
+                            (val.data.data) ? this.scholar.education.school.is_enrolled = true : '';
+                            this.updateEnrollment(val.data.data);
+                        break;
+                        case 'grade':
+                            this.updateEnrollment(val.data.data);
+                        break;
+                        case 'lock':
+                            this.updateEnrollment(val.data.data);
+                        break;
                     }
+                    this.id = null;
                 }
             },
         },
@@ -113,8 +124,14 @@ export default {
         showEnrollment(data){
             this.$parent.showEnrollment(this.scholar.education.info,data);
         },
-        showAssessment(){
-
+        showAssessment(data){
+            this.$parent.showAssessment(data,this.scholar.education.school.gradings);
+        },
+        updateEnrollment(data){
+            let id = data.id;
+            let index = this.scholar.enrollments.findIndex(item => item.id === id);
+            this.scholar.enrollments[index] = data;
+            this.showAssessment(data);
         }
     }
 }

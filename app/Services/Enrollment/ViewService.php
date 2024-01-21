@@ -15,7 +15,7 @@ class ViewService
         $data = Scholar::with('profile')
         ->with('program:id,name','status:id,name,type,color,others')
         ->with('education.school.school','education.school.semesters','education.school.gradings','education.course','education.level')
-        ->with('enrollments.semester.semester','enrollments.level')
+        ->with('enrollments.semester.semester','enrollments.level','enrollments.subjects')
         ->whereHas('status',function ($query){
             $query->where('type','Ongoing');
         })

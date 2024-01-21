@@ -33,7 +33,7 @@ class EnrollmentResource extends JsonResource
             // 'has_failing' => $this->failed(),
             // 'has_empty' => $this->empty(),
             'attachment' => json_decode($this->attachment,true),
-            'lists' => $this->lists,
+            'subjects' => $this->subjects,
             'created_at' => $this->created_at,
         ];
     }
