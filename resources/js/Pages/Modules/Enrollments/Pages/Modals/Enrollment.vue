@@ -23,15 +23,6 @@
                 <div class="col-lg-12 mt-n2">
                     <hr class="text-muted"/>
                 </div>
-                <!-- <div class="col-md-12 mt-n1 mb-1" v-if="errors">
-                    <div class="alert alert-warning mb-xl-0 fs-10" role="alert">
-                        <ul class="list-group">
-                            <li class="list-group-item text-danger" v-for="(error,index) in errors" v-bind:key="index"><i class="mdi mdi-check-bold align-middle lh-1 me-2"></i> 
-                                {{ error }} 
-                            </li>
-                        </ul>
-                    </div>
-                </div> -->
                 <div class="col-lg-12 mt-n2">
                     <p class="fs-11 mb-1" :class="[($page.props.errors['files.'+0]) ? 'text-danger' : 'text-muted']">Please attach Certificate of Registration.</p>
                     <input multiple type="file" @change="uploadFieldChange" class="form-control mb-n2" style="width: 100%; height: auto;"/>

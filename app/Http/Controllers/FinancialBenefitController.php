@@ -40,7 +40,7 @@ class FinancialBenefitController extends Controller
             $type = $request->type;
             switch($type){
                 case 'completed':
-                    return $this->completed($request);
+                    return $this->save->completed($request);
                 break;
                 case 'pending':
                     return $this->save->pending($request);

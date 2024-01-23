@@ -40,7 +40,7 @@ class ViewService
         $date = now();
         $pending = ScholarEnrollment::whereHas('benefits',function ($query) use ($date){
             $query->where('status_id',11)->where('month','<=',$date);
-        })->groupBy('scholar_id')->pluck('scholar_id');
+        })->where('is_enrolled',1)->groupBy('scholar_id')->pluck('scholar_id');
         $scholars = Scholar::with('profile')->whereIn('id',$pending)->get();
         $month = date('Y',strtotime($date)).'-'.date('m',strtotime($date)).'-01';
         $data = [

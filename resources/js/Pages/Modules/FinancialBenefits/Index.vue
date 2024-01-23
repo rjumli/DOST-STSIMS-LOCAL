@@ -6,7 +6,7 @@
             <Sidebar :latest="latest" ref="sidebar"/>
         </div>
         <div class="file-manager-content w-100 p-4 pb-0" style="height: calc(100vh - 180px); overflow: auto;" ref="box">
-            <Lists v-if="show == 'default'"/>
+            <Lists v-if="show == 'default'" ref="lists"/>
             <Generate :latest="latest" v-else ref="generate"/>
         </div>
     </div>
@@ -29,6 +29,34 @@ export default {
     },
     mounted(){
         this.$refs.sidebar.set(this.latest);
+    },
+    computed: {
+        data() {
+            return this.$page.props.flash;
+        }
+    },
+    watch: {
+        data: {
+            deep: true,
+            handler(val = null) {
+                if(val != null && val !== ''){
+                    switch(val.type){
+                        case 'completed':
+                            this.$nextTick(function(){this.$refs.lists.fetch()});
+                        break;
+                        case 'pending':
+                            
+                        break;
+                    }
+                }
+            },
+        },
+        latest: {
+            deep: true,
+            handler(newLatest) {
+               this.$refs.sidebar.set(newLatest);
+            },
+        },
     },
     methods: {
         showPage(data){

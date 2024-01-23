@@ -21,7 +21,7 @@
                <button v-if="selected.is_locked == 0" @click="openSave()" class="btn btn-success btn-label" type="button">
                   <div class="btn-content"><i class="ri-check-double-line label-icon align-middle fs-16 me-2"></i> Save </div>
                </button>
-               <button v-if="$page.props.role == 'Scholarship Coordinator' || $page.props.role == 'Administrator'" @click="openLock(selected)" class="btn btn-danger btn-md btn-label" type="button" v-b-tooltip.hover title="Scholarship Coordinator Only">
+               <button v-if="selected.is_locked == 1 && ($page.props.role == 'Scholarship Coordinator' || $page.props.role == 'Administrator')" @click="openLock(selected)" class="btn btn-danger btn-md btn-label" type="button" v-b-tooltip.hover title="Scholarship Coordinator Only">
                   <div class="btn-content"><i class="ri-lock-unlock-fill label-icon align-middle fs-16 me-2" ></i> Unlock </div>
                </button>
          </div>

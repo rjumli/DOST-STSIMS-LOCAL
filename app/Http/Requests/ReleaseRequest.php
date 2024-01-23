@@ -13,7 +13,7 @@ class ReleaseRequest extends FormRequest
 
     public function rules(): array
     {
-        if($this->type == 'Completed'){
+        if($this->type == 'completed'){
             return [
                 'attachment' => 'required',
                 'attachment.*' => 'mimes:pdf|max:2000'

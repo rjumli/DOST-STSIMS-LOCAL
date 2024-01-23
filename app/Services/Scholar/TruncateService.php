@@ -74,7 +74,7 @@ class TruncateService
         ScholarEnrollment::truncate();
         ScholarEnrollmentSubject::truncate();
         ScholarEnrollmentBenefit::truncate();
-        // Release::truncate();
+        Release::truncate();
     }
     
     public function semesters(){

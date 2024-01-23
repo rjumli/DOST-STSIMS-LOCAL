@@ -14,7 +14,7 @@ class LbpResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $account_no = str_replace('-', '', $this->account_no);
+        $account_no = str_replace('-', '', $this->profile->account_no);
         $name = strtoupper($this->profile->lastname.', '. $this->profile->firstname);
         $check = (preg_match("/[Ññ]/",$name)) ? 1 : 0 ;
         $account_no_3 = substr($account_no, 0, 3);

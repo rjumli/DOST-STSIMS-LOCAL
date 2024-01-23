@@ -13,7 +13,10 @@
             </div>
         </div>
         <hr class="text-muted"/>
-        <button @click="openGenerate()" class="btn btn-md btn-light btn-label waves-effect waves-light" type="button"><i class="bx bxs-webcam label-icon align-middle fs-16 me-2"></i> Generate Lists</button>
+        <button @click="openGenerate()" :disabled="latest.scholars.data.length == 0" class="btn btn-md btn-light btn-label waves-effect waves-light" type="button">
+            <i class="bx bxs-webcam label-icon align-middle fs-16 me-2"></i> 
+            <span class="text-muted" v-if="latest.scholars.data.length == 0">No scholars found</span><span v-else>Generate Lists</span>
+        </button>
         <hr class="text-muted"/>
         <div class="d-flex align-items-center">
             <div class="flex-grow-1">

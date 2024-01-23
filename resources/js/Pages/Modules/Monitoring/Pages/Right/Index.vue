@@ -1,5 +1,5 @@
 <template>
-    <b-row class="align-items-center">
+    <b-row class="align-items-center" style="overflow: auto;">
         <b-col cols="6">
             <h6 class="text-primary text-uppercase fw-semibold text-truncate fs-12 mb-3">Ongoing Scholars</h6>
             <h4 class="fs- mb-0">{{totalSum}}</h4>
@@ -14,7 +14,7 @@
         </b-col>
         <b-col cols="12">
             <div class="mt-2 pt-2">
-                <b-progress class="progress-lg rounded-pill">
+                <b-progress class="progress-lg rounded-pill" :max="totalSum">
                     <b-progress-bar  v-for="(list,index) in modifiedItems" v-bind:key="index" :value="list.status_count" :variant="list.color" class="rounded-0" />
                 </b-progress>
             </div>

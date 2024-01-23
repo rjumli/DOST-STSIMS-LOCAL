@@ -56,8 +56,8 @@
     <Confirm ref="confirm"/>
 </template>
 <script>
-import View from '../Modals/View.vue';
-import Confirm from '../Modals/Confirm.vue';
+import View from '../Modals/Generate/View.vue';
+import Confirm from '../Modals/Generate/Confirm.vue';
 import simplebar from 'simplebar-vue';
 export default {
     components: { simplebar, View, Confirm },

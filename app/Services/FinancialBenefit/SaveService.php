@@ -4,6 +4,7 @@ namespace App\Services\FinancialBenefit;
 
 use App\Models\Release;
 use App\Models\ScholarEnrollmentBenefit;
+use App\Http\Resources\Benefit\ReleaseResource;
 
 class SaveService
 {
@@ -29,5 +30,38 @@ class SaveService
             }
         }
         return $data;
+    }
+
+    public function completed($request){
+        $attachments = $this->upload($request);
+        $benefit = ScholarEnrollmentBenefit::where('release_id',$request->id)->update(['status_id' => 13]);
+        $data = Release::where('id',$request->id)->update(['status_id' => 13, 'attachment' => json_encode($attachments)]);
+        $data = Release::where('id',$request->id)->first();
+        return new ReleaseResource($data);
+    }
+
+    public function upload($request){
+        if($request->hasFile('attachment'))
+        {   
+            $id = $request->batch;
+            $year = date('Y');
+            $files = $request->file('attachment');   
+            foreach ($files as $key=>$file) {
+                if($key == 0){
+                    $file_name = 'release_'.$id.'_'.$year.'.'.$file->getClientOriginalExtension();
+                }else{
+                    $file_name = 'release_'.$id.'_'.$year.'-'.$key.'.'.$file->getClientOriginalExtension();
+                }
+                $file_path = $file->storeAs('benefits', $file_name, 'public');
+                
+                $attachment[] = [
+                    'name' => $file_name,
+                    'file' => $file_path,
+                    'added_by' => \Auth::user()->id,
+                    'created_at' => date('M d, Y g:i a', strtotime(now()))
+                ];
+            }
+            return $attachment;
+        }
     }
 }

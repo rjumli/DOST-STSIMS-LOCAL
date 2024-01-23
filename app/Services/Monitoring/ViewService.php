@@ -33,14 +33,23 @@ class ViewService
     public function statistics($request){
         return [
             'statistics' => [
-                'count_status' => $this->statuses(),
-                'count_checking' => $this->checking($request),
-                'count_released' => $this->released(),
-                'terms' => [
-                    'semester' => SchoolCampus::where('term_id',4)->where('region_code',$this->code)->count(),
-                    'trimester' => SchoolCampus::where('term_id',5)->where('region_code',$this->code)->count(),
-                    'quarter' => SchoolCampus::where('term_id',6)->where('region_code',$this->code)->count(),
+                'right' => [
+
+                ],
+                'middle' => [
+
+                ],
+                'left' => [
+                    
                 ]
+                // 'count_status' => $this->statuses(),
+                // 'count_checking' => $this->checking($request),
+                // 'count_released' => $this->released(),
+                // 'terms' => [
+                //     'semester' => SchoolCampus::where('term_id',4)->where('region_code',$this->code)->count(),
+                //     'trimester' => SchoolCampus::where('term_id',5)->where('region_code',$this->code)->count(),
+                //     'quarter' => SchoolCampus::where('term_id',6)->where('region_code',$this->code)->count(),
+                // ]
             ]
         ];
     }

@@ -3,6 +3,7 @@
 namespace App\Services\School;
 
 use App\Models\School;
+use App\Models\Release;
 use App\Models\SchoolCampus;
 use App\Models\SchoolCourse;
 use App\Models\ListDropdown;
@@ -132,7 +133,7 @@ class SaveService
         // SchoolCourseProspectus::truncate();
         ScholarEnrollment::truncate();
         ScholarEnrollmentSubject::truncate();
-        // Release::truncate();
+        Release::truncate();
         \DB::statement('SET FOREIGN_KEY_CHECKS=1');
         return back()->with([
             'data' => true,
