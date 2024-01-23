@@ -73,6 +73,12 @@
                     </Link>
                 </li>   
                 <li class="nav-item">
+                    <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/FinancialBenefits') }" href="/financial-benefits">
+                        <i class='ri-wallet-3-fill ' ></i>
+                        <span data-key="t-students">Financial Benefits</span>
+                    </Link>
+                </li>   
+                <li class="nav-item">
                     <b-link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Staffs') }" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebar1">
                         <i class="bx bx-user-circle"></i>

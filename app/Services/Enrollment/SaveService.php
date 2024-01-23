@@ -14,6 +14,8 @@ class SaveService
     public function enrollment($request){
         $data = ScholarEnrollment::where('id',$request->id)->first();
         $attach = $this->upload($data,$request,'enrollments');
+        ($data->is_missed) ? $data->is_delayed = 1 : ''; 
+        ($data->is_missed) ? $data->is_missed = 0 : '';
         $data->attachment = $attach;
         $data->added_by = \Auth::user()->id;
         $data->is_enrolled = 1;
@@ -83,7 +85,7 @@ class SaveService
                 }
                 $file_path = ($type == 'grades') ? $file->storeAs('uploads/'.$code.'/Grades', $file_name, 'public') : $file->storeAs('uploads/'.$code.'/Enrollments', $file_name, 'public');
 
-                $attachment[] = [
+                $attachment = [
                     'name' => $file_name,
                     'file' => $file_path,
                     'added_by' => \Auth::user()->id,
@@ -93,7 +95,7 @@ class SaveService
             if($type == 'grades'){
                 $attach['grades'][] = $attachment;
             }else{
-                $attach['enrollments'][] = $attachment;
+                $attach['enrollments'][]= $attachment;
             }
             return $attach;
         }

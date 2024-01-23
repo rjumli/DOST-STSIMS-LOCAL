@@ -92,12 +92,14 @@
             </b-row>
         </div>
     </div>
+    <Truncate ref="truncate"/>
     <Download ref="download"/>
 </template>
 <script>
+import Truncate from './Modals/Truncate.vue';
 import Download from './Modals/Download.vue';
 export default {
-    components: { Download },
+    components: { Download, Truncate },
     props: ['statistics'],
     data(){
         return {
@@ -109,6 +111,9 @@ export default {
         openDownload(){
             this.$refs.download.show();
         },
+        openTruncate(){
+            this.$refs.truncate.show();
+        }
     }
 }
 </script>

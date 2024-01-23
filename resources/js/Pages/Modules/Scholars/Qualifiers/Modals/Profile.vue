@@ -359,7 +359,7 @@ export default {
             if(this.type == 'Update Qualifier'){
                 this.form = this.$inertia.form({
                     id: this.user.id,
-                    status_type: this.status,
+                    status_id: this.status,
                     reason: this.reason,
                     type: 'edit'
                 });

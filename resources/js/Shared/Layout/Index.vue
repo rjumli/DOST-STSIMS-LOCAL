@@ -1,5 +1,4 @@
 <script>
-import { layoutComputed } from "@/State/helpers";
 import Vertical from "./Vertical.vue";
 
 export default {
@@ -9,7 +8,6 @@ export default {
         return {};
     },
     computed: {
-        ...layoutComputed,
         message() {
             return (this.$page.props.flash.message) ?  true : false;
         }

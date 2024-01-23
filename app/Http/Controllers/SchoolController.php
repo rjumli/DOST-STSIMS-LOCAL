@@ -47,7 +47,7 @@ class SchoolController extends Controller
             $result = $this->handleTransaction(function () use ($request) {
                 switch($request->type){
                     case 'truncate':
-                        return $this->truncate($request);
+                        return $this->save->truncate();
                     break;
                     case 'semester': 
                         return $this->save->semester($request);

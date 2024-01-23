@@ -127,6 +127,7 @@ class ViewService
             });
         })
         ->where('scholar_id',$id)
+        ->orderBy('id','DESC')
         ->get();
         return ListResource::collection($data);
     }

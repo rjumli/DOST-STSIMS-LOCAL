@@ -9,6 +9,8 @@ use App\Models\ListDropdown;
 use App\Models\SchoolGrading;
 use App\Models\SchoolSemester;
 use App\Models\SchoolProspectus;
+use App\Models\ScholarEnrollment;
+use App\Models\ScholarEnrollmentSubject;
 use App\Jobs\NewSemester;
 use App\Traits\HandlesCurl;
 
@@ -57,6 +59,10 @@ class SaveService
     public static function semester($request){
         $data = SchoolSemester::create(array_merge($request->all(),['is_active' => true]));
         if($data){
+            $ids = SchoolSemester::where('school_id',$request->school_id)->where('is_active',1)->where('id','!=',$data->id)->pluck('id');
+            foreach($ids as $id){
+                $scholar = ScholarEnrollment::where('is_enrolled',0)->where('semester_id',$id)->update(['is_missed' => 1]);
+            }
             SchoolSemester::where('school_id',$request->school_id)->where('id','!=',$data->id)->update(['is_active' => 0]);
             NewSemester::dispatch($data->id)->delay(now()->addSeconds(10));
         }
@@ -117,6 +123,23 @@ class SaveService
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
         return $result;
+    }
+
+    public function truncate(){
+        \DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        SchoolSemester::truncate();
+        // SchoolGrading::truncate();
+        // SchoolCourseProspectus::truncate();
+        ScholarEnrollment::truncate();
+        ScholarEnrollmentSubject::truncate();
+        // Release::truncate();
+        \DB::statement('SET FOREIGN_KEY_CHECKS=1');
+        return back()->with([
+            'data' => true,
+            'message' => 'Database Truncated Succesfully',
+            'type' => 'bxs-check-circle',
+            'color' => 'success'
+        ]);
     }
 
 }

@@ -2,7 +2,6 @@
     <b-modal v-model="showModal" hide-footer class="v-modal-custom" modal-class="zoomIn" fullscreen>
         <template v-slot:header>
             <div style="border-bottom: 1px solid #ccc; width: 100%;">
-                
             <i @click="showModal=false" class="ri-close-circle-fill float-end" style="cursor:pointer; font-size: 40px;"></i>
             <b-row class="mb-3 mt-n1">
                 <b-col md>

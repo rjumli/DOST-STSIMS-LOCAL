@@ -22,7 +22,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/schools', App\Http\Controllers\SchoolController::class);
     Route::resource('/settings', App\Http\Controllers\SettingController::class);
     Route::resource('/enrollments', App\Http\Controllers\EnrollmentController::class);
-    Route::get('/enrollments/{code}/{type}/{id}', [App\Http\Controllers\EnrollmentController::class, 'page']);
+    Route::resource('/financial-benefits', App\Http\Controllers\FinancialBenefitController::class);
 
     Route::prefix('staffs')->group(function(){
         Route::resource('/lists', App\Http\Controllers\Staff\ListController::class);

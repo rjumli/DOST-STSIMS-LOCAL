@@ -71,6 +71,7 @@ class HandleInertiaRequests extends Middleware
             'agencies' => ListAgency::all(),
             'region_code' => $region_code,
             'semester_year' => $semester_year,
+            'role' => (\Auth::check()) ? \Auth::user()->role : '-',
             'settings' => ($settings) ? new SettingResource($settings) : null
         ]);
     }
