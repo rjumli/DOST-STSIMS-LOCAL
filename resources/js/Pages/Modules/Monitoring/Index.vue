@@ -3,16 +3,16 @@
     <PageHeader :title="title" :items="items" />
     <div class="chat-wrapper d-lg-flex gap-1 mx-n4 mt-n4 p-1">
         <div class="file-manager-sidebar">
-            <div class="p-4 d-flex flex-column h-100 file-detail-content-scroll" data-simplebar>
-                <Left :counts="counts" :settings="settings" :dropdowns="dropdowns"/>
+            <div class="p-4 d-flex flex-column h-100 file-detail-content-scroll" style="overflow: auto;">
+                <Left :left="statistics.left"/>
             </div>
          </div>
         <div class="file-manager-content p-3 pb-0 w-100" ref="myDiv">
-            <Middle :settings="settings" :dropdowns="dropdowns" :terms="statistics.terms"/>
+            <Middle :settings="settings" :dropdowns="dropdowns" :terms="statistics.middle.terms"/>
         </div>
         <div class="file-manager-sidebar">
             <div class="p-4 d-flex flex-column h-100 file-detail-content-scroll" data-simplebar>
-               <Right :statuses="statistics.count_status"/>
+               <Right :right="statistics.right"/>
             </div>
          </div>
     </div>
@@ -25,7 +25,7 @@ import PageHeader from "@/Shared/Components/PageHeader.vue";
 import Pagination from "@/Shared/Components/Pagination.vue";
 export default {
     components: { PageHeader, Pagination, Left, Right, Middle },
-    props: ['settings','dropdowns','regions', 'programs', 'dropdowns', 'statistics'],
+    props: ['statistics','settings','dropdowns'],
     data() {
         return {
             currentUrl: window.location.origin,

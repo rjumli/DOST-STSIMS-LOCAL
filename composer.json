@@ -12,6 +12,7 @@
         "jenssegers/agent": "^2.6",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
+        "laravel/telescope": "^4.17",
         "laravel/tinker": "^2.8",
         "maatwebsite/excel": "^3.1",
         "orangehill/iseed": "^3.0",
@@ -61,7 +62,9 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "laravel/telescope"
+            ]
         }
     },
     "config": {

@@ -57,8 +57,10 @@ export default {
             this.scholar = data;
             this.$emit('set',data);
             if (this.scholar.education.subcourse == null) {
-                this.$refs.course.set(this.scholar);
-                this.show = 'course';
+                if(this.scholar.education.school.semester){
+                    this.$refs.course.set(this.scholar);
+                    this.show = 'course';
+                }
             }else{
                 if(this.show != 'enroll'){
                     this.$emit('show',true);

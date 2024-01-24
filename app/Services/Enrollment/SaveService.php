@@ -56,8 +56,19 @@ class SaveService
             ($count == 0) ? $data->is_grades_completed = 1 : $data->is_grades_completed = 0;
             $data->save();
 
-            $data = ScholarEnrollment::with('semester.semester','level','subjects')->where('id',$request->id)->first();
-            return new EnrollmentResource($data);
+            if($request->subtype == 'monitoring'){
+                $data=ScholarEnrollment::select('id','scholar_id','level_id','semester_id')
+                ->with('level','semester:id,semester_id,academic_year','semester.semester:id,name')
+                ->withwhereHas('subjects',function ($query){
+                    $query->where('grade',NULL);
+                })->whereHas('semester',function ($query){
+                    $query->where('is_active',0);
+                })->where('id',$request->id)->first();
+                return ($data) ? $data : ['id' => $request->id,'code' => 'empty'];
+            }else{
+                $data = ScholarEnrollment::with('semester.semester','level','subjects')->where('id',$request->id)->first();
+                return new EnrollmentResource($data);
+            }
         }
     }
 
