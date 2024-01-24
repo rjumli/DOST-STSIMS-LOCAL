@@ -23,6 +23,15 @@ class IndexController extends Controller
             case 'lacking_grades':
                 return $this->list->lacking_grades($request);
             break;
+            case 'unreleased_benefits':
+                return $this->list->unreleased_benefits($request);
+            break;
+            case 'missed_enrollments':
+                return $this->list->missed_enrollments($request);
+            break;
+            case 'terminations':
+                return $this->list->terminations($request);
+            break;
             default : 
             return inertia('Modules/Monitoring/Index',$this->count->statistics($request));
         }

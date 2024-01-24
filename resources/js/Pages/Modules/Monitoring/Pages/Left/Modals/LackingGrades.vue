@@ -1,6 +1,5 @@
 <template>
     <b-modal v-model="showModal" title="Lacking Grades" hide-footer style="--vz-modal-width: 900px;" header-class="p-3 bg-light" class="v-modal-custom" modal-class="zoomIn" centered>    
-
         <input class="form-control mb-3" v-model="filter.keyword" type="text" placeholder="Search Scholar">
         <hr class="text-muted"/>
         <div class="table-responsive">

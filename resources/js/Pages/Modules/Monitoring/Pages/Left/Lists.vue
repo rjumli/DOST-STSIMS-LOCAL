@@ -51,7 +51,7 @@
                 </div>
             </div>
         </li>
-        <li>
+        <li @click="openUnreleased()">
             <div class="d-flex align-items-center">
                 <div class="flex-shrink-0">
                     <div class="avatar-xs">
@@ -73,7 +73,7 @@
                 </div>
             </div>
         </li>
-        <li>
+        <li @click="openMissed()">
             <div class="d-flex align-items-center">
                 <div class="flex-shrink-0">
                     <div class="avatar-xs">
@@ -117,7 +117,7 @@
                 </div>
             </div>
         </li>
-        <li>
+        <li @click="openTermination()">
             <div class="d-flex align-items-center">
                 <div class="flex-shrink-0">
                     <div class="avatar-xs">
@@ -141,11 +141,17 @@
         </li>
     </ul>
     <LackingGrades ref="lacking_grades"/>
+    <UnreleasedBenefit ref="unreleased_benefits"/>
+    <MissedEnrollment ref="missed_enrollments"/>
+    <Termination ref="terminations"/>
 </template>
 <script>
+import Termination from './Modals/Termination';
+import MissedEnrollment from './Modals/MissedEnrollment';
+import UnreleasedBenefit from './Modals/UnreleasedBenefit';
 import LackingGrades from './Modals/LackingGrades.vue';
 export default {
-    components: { LackingGrades },
+    components: { LackingGrades, UnreleasedBenefit, MissedEnrollment, Termination },
     props: ['lists'],
     data(){
         return {
@@ -154,7 +160,16 @@ export default {
     },
     methods: {
         openLacking(){
-            this.$refs.lacking_grades.show();
+            (this.lists.lacking_grades > 0) ? this.$refs.lacking_grades.show() : '';
+        },
+        openUnreleased(){
+            (this.lists.unreleased_benefits > 0) ? this.$refs.unreleased_benefits.show() : '';
+        },
+        openMissed(){
+            (this.lists.missed_enrollments > 0) ? this.$refs.missed_enrollments.show() : '';
+        },
+        openTermination(){
+            (this.lists.terminations > 0) ? this.$refs.terminations.show() : '';
         }
     }
 }
