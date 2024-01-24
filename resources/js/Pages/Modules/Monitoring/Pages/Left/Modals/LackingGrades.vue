@@ -52,8 +52,8 @@ export default {
         }
     },
     watch: {
-        keyword(newVal){
-            this.checkSearchStr(newVal)
+       "filter.keyword"(newVal){
+           this.checkSearchStr(newVal)
         }
     },
     methods: {

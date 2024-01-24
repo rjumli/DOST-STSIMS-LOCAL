@@ -2276,7 +2276,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   watch: {
-    keyword: function keyword(newVal) {
+    "filter.keyword": function filterKeyword(newVal) {
       this.checkSearchStr(newVal);
     }
   },

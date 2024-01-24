@@ -12,8 +12,15 @@ use App\Http\Resources\Monitoring\TerminationResource;
 class ListService
 {
     public function lacking_grades($request){
+        $keyword = $request->keyword;
         $scholars = Scholar::select('id','spas_id','awarded_year','status_id')
-        ->with('profile:id,scholar_id,firstname,lastname,middlename')
+        ->withWhereHas('profile',function ($query) use ($keyword) {
+            $query->select('id','scholar_id','firstname','lastname','middlename')
+            ->when($keyword, function ($query, $keyword) {
+                $query->where(\DB::raw('concat(firstname," ",lastname)'), 'LIKE', '%'.$keyword.'%')
+                ->where(\DB::raw('concat(lastname," ",firstname)'), 'LIKE', '%'.$keyword.'%');
+            });
+        })
         ->withwhereHas('enrollments', function ($query){
             $query->select('id','scholar_id','level_id','semester_id')
                 ->with('level','semester:id,semester_id,academic_year','semester.semester:id,name')
