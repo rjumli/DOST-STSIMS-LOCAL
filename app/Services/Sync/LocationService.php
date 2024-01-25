@@ -19,6 +19,7 @@ class LocationService
 
     public function fetch(){
         set_time_limit(0);
+        ini_set('memory_limit', '256M');
         $arrays = ['regions','provinces','municipalities','barangays'];
         try {
             foreach($arrays as $array){

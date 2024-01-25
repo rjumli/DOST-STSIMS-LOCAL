@@ -43,8 +43,8 @@
                 <button class="btn btn-info btn-sm w-100" type="button">
                     <div class="btn-content"><i class="ri-question-answer-line align-bottom me-1"></i> Reports</div>
                 </button>
-                <button @click="release(released)" class="btn btn-danger btn-sm w-100" type="button">
-                    <div class="btn-content"><i class="ri-hand-coin-line align-bottom me-1"></i> Released ({{released}})</div>
+                <button @click="openRelease(right.releasing)" class="btn btn-danger btn-sm w-100" type="button">
+                    <div class="btn-content"><i class="ri-hand-coin-line align-bottom me-1"></i> Released ({{right.releasing}})</div>
                 </button>
             </div>
             <hr class="text-muted mb-4"/>
@@ -65,9 +65,12 @@
             </div>
         </b-col>
     </b-row>
+    <Released ref="released"/>
 </template>
 <script>
+import Released from './Modals/Released.vue';
 export default {
+    components: { Released },
     props:['right'],
     computed: {
         totalSum() {
@@ -84,7 +87,7 @@ export default {
             let a  = (count/this.totalSum) * 100;
             return a+'%';
         },
-        release(data){
+        openRelease(data){
             this.$refs.released.show(data);
         }
     }

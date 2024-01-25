@@ -4,7 +4,7 @@
      <div class="chat-wrapper d-lg-flex gap-1 mx-n4 mt-n4 p-1">
         <div class="file-manager-sidebar">
             <div class="p-4 d-flex flex-column h-100 file-detail-content-scroll" data-simplebar>
-                {{schools.data[0]}}
+                {{schools}}
             </div>
          </div>
         <div class="file-manager-content p-3 pb-0 w-100" ref="myDiv">
@@ -33,6 +33,7 @@
                                     <th width="15%" class="text-center">Start At</th>
                                     <th width="15%" class="text-center">End At</th>
                                     <th width="10%" class="text-center">Status</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                                 <tbody class=" fs-12">
@@ -48,6 +49,9 @@
                                             <b-badge v-if="list.status" variant="success">Open</b-badge>
                                             <b-badge v-else variant="danger">Close</b-badge>
                                         </td>
+                                        <td>
+                                            <b-button @click="openView(list)" variant="soft-primary" v-b-tooltip.hover title="View" size="sm" class="edit-list"><i class="ri-eye-fill align-bottom"></i> </b-button>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -58,13 +62,15 @@
         </div>
     </div>
     <Action ref="action"/>
+    <View :settings="settings.data" ref="view"/>
 </template>
 <script>
+import View from './Modals/View.vue';
 import Action from './Modals/Action.vue';
 import simplebar from 'simplebar-vue';
 import PageHeader from "@/Shared/Components/PageHeader.vue";
 export default {
-    components: { PageHeader, simplebar, Action },
+    components: { PageHeader, simplebar, Action, View },
     props: ['schools','settings'],
     data() {
         return {
@@ -145,7 +151,11 @@ export default {
         },
         openAction(){
             this.$refs.action.show(this.selected,this.schools.data,this.settings);
+        },
+        openView(data){
+            this.$refs.view.show(data);
         }
+
     }
 }
 </script>

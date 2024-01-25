@@ -9,13 +9,14 @@ class SchoolResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $campus = ($this->is_main == 0) ? '- '.$this->campus : ''; 
+        $campus = ($this->is_main == 0) ? '- '.$this->campus : '- Main'; 
         return [
             'id' => $this->id,
             'selected' => false,
             'name' => ucwords(strtolower($this->school->name.' '.$campus)),
             'class' => $this->school->class->name,
             'campus' => $this->campus,
+            'term' => $this->term->name,
             'is_main' => $this->is_main,
             'semesters' => (count($this->semesters)>0) ? $this->semesters[0] : '',
             // 'academic_year' => (count($this->semesters)>0) ? $this->semesters[0]->academic_year.' - '.$this->semesters[0]->semester->name : '-',

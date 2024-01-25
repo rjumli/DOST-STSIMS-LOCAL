@@ -7,14 +7,19 @@ use Illuminate\Http\Request;
 use App\Services\Monitoring\ViewService;
 use App\Services\Monitoring\CountService;
 use App\Services\Monitoring\ListService;
+use App\Services\Monitoring\SaveService;
+use App\Traits\HandlesTransaction;
 
 class IndexController extends Controller
 {
-    public function __construct(ViewService $view, CountService $count, ListService $list)
+    use HandlesTransaction;
+
+    public function __construct(ViewService $view, CountService $count, ListService $list, SaveService $save)
     {
         $this->view = $view;
         $this->count = $count;
         $this->list = $list;
+        $this->save = $save;
     }
 
     public function index(Request $request){
@@ -43,5 +48,25 @@ class IndexController extends Controller
                 return inertia('Modules/Monitoring/Schools/Index',$this->view->schools());
             break;
         }
+    }
+
+    public function store(Request $request){
+        $result = $this->handleTransaction(function () use ($request) {
+            switch($request->type){
+                case 'releasing':
+                    return $this->save->releasing($request);
+                break;
+                case 'termination':
+                    return $this->save->terminate($request);
+                break;
+            }
+        });
+
+        return back()->with([
+            'data' => $result['data'],
+            'message' => $result['message'],
+            'info' => $result['info'],
+            'status' => $result['status'],
+        ]);
     }
 }

@@ -127,7 +127,7 @@ export default {
         datares: {
             deep: true,
             handler(val = null) {
-                if(val != null && val !== ''){
+                if(this.showModal && val != null && val !== ''){
                     let id = val.id;
                     let index = this.scholar.enrollments.findIndex(item => item.id === id);
                     if(val.code == 'empty'){
