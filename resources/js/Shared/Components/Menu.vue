@@ -100,6 +100,12 @@
                     </div>
                 </li>
                 <li class="nav-item">
+                    <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Insights') }" href="/insights">
+                        <i class='ri-line-chart-fill' ></i>
+                        <span data-key="t-students">Insights</span>
+                    </Link>
+                </li>
+                <li class="nav-item">
                     <b-link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Logs') }" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebar1">
                         <i class="ri-list-check-2"></i>

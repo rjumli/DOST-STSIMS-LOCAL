@@ -38,6 +38,8 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 
+    Route::resource('/insights', App\Http\Controllers\InsightController::class);
+
     Route::prefix('logs')->group(function(){
         Route::controller(App\Http\Controllers\LogController::class)->group(function () {
             Route::get('/authentication','authentication');

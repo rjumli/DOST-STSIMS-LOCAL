@@ -34,7 +34,6 @@ class SaveService
                 }
             }
         }
-
         return ['completed' => true];
     }
 }
