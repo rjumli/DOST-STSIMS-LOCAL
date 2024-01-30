@@ -13,6 +13,21 @@ class InsightController extends Controller
     }
 
     public function index(Request $request){
-        return inertia('Modules/Insights/Index',['statistics' => $this->count->statistics()]);
+        $type = $request->type;
+        switch($type){
+            case 'years':
+                return $this->count->years($request);
+            break;
+            case 'schools':
+                return $this->count->schools($request);
+            break;
+            case 'courses':
+                return $this->count->courses($request);
+            break;
+            default : 
+            return inertia('Modules/Insights/Index',[
+                'statistics' => $this->count->statistics($request)
+            ]);
+        }
     }
 }

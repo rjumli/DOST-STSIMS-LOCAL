@@ -5,7 +5,7 @@
                 <b-card-body>
                     <div class="d-flex align-items-center">
                         <div class="avatar-sm flex-shrink-0">
-                            <span class="avatar-title bg-light text-primary rounded-circle fs-3">
+                            <span class="avatar-title bg-light rounded-circle fs-3" :class="item.color">
                                 <i :class="`bx ${item.icon} align-middle`"></i>
                             </span>
                         </div>
@@ -48,7 +48,7 @@ export default {
                 dataLabels: {
                     enabled: false
                 },
-                colors: ['#f1b44c'],
+                colors: ['#006633'],
                 fill: {
                     type: 'gradient',
                     gradient: {
