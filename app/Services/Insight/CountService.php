@@ -244,7 +244,28 @@ class CountService
 
     public function schools($request){
         $sort = $request->sort;
-        $data = SchoolCampus::with('school')->withCount('scholars')->orderBy('scholars_count', $sort)->take(5)->get();
+        $type = $request->scholars;
+        $data = SchoolCampus::with('school')->withCount('scholars')
+        ->when($type, function ($query, $type) {
+            if($type == 'ongoing'){
+                $query->whereHas('scholars', function ($query) use ($type) {
+                    $query->whereHas('scholar', function ($query) use ($type) {
+                        $query->whereHas('status',function ($query){
+                            $query->where('type','ongoing');
+                        });
+                    });
+                });
+            }else{
+                $query->whereHas('scholars', function ($query) use ($type) {
+                    $query->whereHas('scholar', function ($query) use ($type) {
+                        $query->whereHas('status',function ($query){
+                            $query->where('name','Graduated');
+                        });
+                    });
+                });
+            }
+        })
+        ->orderBy('scholars_count', $sort)->take(5)->get();
         return $data;
     }
 

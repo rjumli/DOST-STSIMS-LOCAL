@@ -3,12 +3,22 @@
         <div class="card-header align-items-center d-flex">
             <h5 class="card-title mb-0 flex-grow-1">Most Schools</h5>
             <div>
-                <button class="btn btn-soft-primary btn-sm" type="button">
+                <!-- <button class="btn btn-soft-primary btn-sm" type="button">
                     <div @click="viewSchools" class="btn-content"> View all </div>
-                </button>
+                </button> -->
+                <div class="input-group input-group-sm">
+                    <select v-model="scholars" @change="fetch('desc')" class="form-select" id="inputGroupSelect01" style="width: 170px;">
+                        <option :value="null">All Scholars</option>
+                        <option value="ongoing">Ongoing Scholars</option>
+                        <option value="graduated">Graduated Scholars</option>
+                    </select>
+                    <b-button type="button" variant="primary">
+                        View
+                    </b-button>
+                </div>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body" style="height: 300px;">
             <div class="table-responsive table-card">
                 <table class="table align-middle table-centered table-nowrap mb-3">
                     <thead class="text-muted table-light fs-11">
@@ -42,7 +52,8 @@ export default {
         return {
             currentUrl: window.location.origin,
             schools: [],
-            sort: null
+            sort: null,
+            scholars: null,
         }
     },
     created(){
@@ -54,7 +65,8 @@ export default {
             axios.get(this.currentUrl + '/insights', {
                 params: {
                     type: 'schools',
-                    sort: this.sort
+                    sort: this.sort,
+                    scholars: this.scholars
                 }
             })
             .then(response => {

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::get('/test', [App\Http\Controllers\HomeController::class, 'test']);
 Route::get('/installation', [App\Http\Controllers\HomeController::class, 'installation']);
 Route::prefix('sync')->group(function(){
     Route::get('/check', [App\Http\Controllers\SyncController::class, 'checkApi']);
