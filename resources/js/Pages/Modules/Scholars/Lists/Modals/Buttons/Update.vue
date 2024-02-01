@@ -35,7 +35,7 @@
         
         <template v-slot:footer>
             <b-button @click="hide()" variant="light" block>Cancel</b-button>
-            <b-button @click="create('ok')" variant="primary" :disabled="form.processing" block>Proceed</b-button>
+            <b-button @click="save('ok')" variant="primary" :disabled="form.processing" block>Proceed</b-button>
         </template>
     </b-modal>
 </template>
@@ -65,6 +65,22 @@ export default {
             this.selected = data;
             this.type = type;
             this.showModal = true;
+        },
+        save(){
+            this.form = this.$inertia.form({
+                id: this.selected.id,
+                status_id: this.status,
+                type: 'scholar'
+            })
+
+            this.form.put('/scholars/listing/update',{
+                preserveScroll: true,
+                onSuccess: (response) => {
+                    this.showModal = false;
+                    this.confirmation = '';
+                    this.prospectus = '';
+                }
+            });
         },
         hide(){
             this.showModal = false;

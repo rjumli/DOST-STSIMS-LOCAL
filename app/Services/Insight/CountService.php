@@ -8,8 +8,10 @@ use App\Models\ScholarAddress;
 use App\Models\ScholarEducation;
 use App\Models\ListProgram;
 use App\Models\ListCourse;
+use App\Models\ListStatus;
 use App\Models\SchoolCampus;
 use App\Models\LocationProvince;
+use App\Http\Resources\DefaultResource;
 
 class CountService
 {
@@ -22,7 +24,7 @@ class CountService
                 'graduates' => $this->graduates()
             ],
             'provinces' => $this->provinces($request),
-            'gender' => ScholarProfile::select(\DB::raw('count(*) as total'))->whereIn('sex',['F','M'])->groupBy('sex')->get(),
+            'statuses' => $this->statuses($request)
         ];
     }
 
@@ -245,34 +247,114 @@ class CountService
     public function schools($request){
         $sort = $request->sort;
         $type = $request->scholars;
-        $data = SchoolCampus::with('school')->withCount('scholars')
-        ->when($type, function ($query, $type) {
-            if($type == 'ongoing'){
-                $query->whereHas('scholars', function ($query) use ($type) {
+        $data = SchoolCampus::with('school')
+        ->withCount(['scholars' => function ($query) use ($type) {
+            $query->when($type, function ($query, $type) {
+                if($type == 'ongoing'){
                     $query->whereHas('scholar', function ($query) use ($type) {
                         $query->whereHas('status',function ($query){
                             $query->where('type','ongoing');
                         });
                     });
-                });
-            }else{
-                $query->whereHas('scholars', function ($query) use ($type) {
+                }else{
                     $query->whereHas('scholar', function ($query) use ($type) {
                         $query->whereHas('status',function ($query){
                             $query->where('name','Graduated');
                         });
                     });
-                });
-            }
-        })
-        ->orderBy('scholars_count', $sort)->take(5)->get();
-        return $data;
+                }
+            });
+        }])
+        ->orderBy('scholars_count', $sort)->paginate(5)->withQueryString();
+        return DefaultResource::collection($data);
     }
 
     public function courses($request){
         $sort = $request->sort;
-        $data = ListCourse::withCount('scholars')->orderBy('scholars_count', $sort)->take(5)->get();
+        $type = $request->scholars;
+        $data = ListCourse::
+        withCount(['scholars' => function ($query) use ($type) {
+            $query->when($type, function ($query, $type) {
+                if($type == 'ongoing'){
+                    $query->whereHas('scholar', function ($query) use ($type) {
+                        $query->whereHas('status',function ($query){
+                            $query->where('type','ongoing');
+                        });
+                    });
+                }else{
+                    $query->whereHas('scholar', function ($query) use ($type) {
+                        $query->whereHas('status',function ($query){
+                            $query->where('name','Graduated');
+                        });
+                    });
+                }
+            });
+        }])
+        ->orderBy('scholars_count', $sort)->paginate(5)->withQueryString();
+        return DefaultResource::collection($data);
+    }
+
+    public function genders($request){
+        $type = $request->scholars;
+        $data = ScholarProfile::select(\DB::raw('count(*) as total'))
+        ->when($type, function ($query, $type) {
+            if($type == 'ongoing'){
+                $query->whereHas('scholar', function ($query) use ($type) {
+                    $query->whereHas('status',function ($query){
+                        $query->where('type','ongoing');
+                    });
+                });
+            }else{
+                $query->whereHas('scholar', function ($query) use ($type) {
+                    $query->whereHas('status',function ($query){
+                        $query->where('name','Graduated');
+                    });
+                });
+            }
+        })
+        ->whereIn('sex',['F','M'])->groupBy('sex')->get();
         return $data;
     }
 
+    public function statuses($request){
+        $statuses = ListStatus::whereIn('type',['Progress','Ongoing'])->get();
+        // $provinces = LocationProvince::withCount('scholars')->whereIn('code',$provinces)->orderBy('scholars_count','DESC')->get();
+        $types = [['id' => 1,'name' => 'Undergraduate'],['id' => 0, 'name' => 'JLSS']];
+
+        $array = []; $sums = []; $total = [];
+        
+        foreach($statuses as $key=>$status){
+            $id = $status->id;
+            $count = [];
+            foreach($types as $key2=>$type){
+                $data = Scholar::where('status_id',$id)->where('is_undergrad',$type['id'])
+                ->count();
+                array_push($count,$data);    
+                $sums[$key2][$key] = $data;
+            }
+
+            $array[] = [
+                'status' => $status->name,
+                'count' => $count,
+                'total' => array_sum($count)
+            ];
+        }
+
+        foreach($types as $key2=>$type){
+            $total[] = array_sum($sums[$key2]); 
+        }
+
+        $total2 = [
+            'status' => 'Total',
+            'count' => $total,
+            'total' => array_sum($total)
+        ];
+        
+        $all = [
+            'statuses' => $array,
+            'totals' => $total2,
+            'types' => $types
+        ];
+        return $all;
+    }
 }

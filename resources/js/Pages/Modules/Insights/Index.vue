@@ -21,11 +21,15 @@
             <Course :total="statistics.scholars.total" ref="course"/>
         </b-col>
         <b-col xxl="4">
-            <Gender :gender="statistics.gender"/>
+            <Gender/>
+        </b-col>
+          <b-col xxl="4">
+            <Status :statuses="statistics.statuses"/>
         </b-col>
     </b-row>
 </template>
 <script>
+import Status from './Components/Status.vue';
 import Gender from './Components/Gender.vue';
 import Course from './Components/Course.vue';
 import School from './Components/School.vue';
@@ -36,7 +40,7 @@ import Count from './Components/Count.vue';
 import PageHeader from "@/Shared/Components/PageHeader.vue";
 export default {
     props: ['statistics'],
-    components : { PageHeader, Count, Total, Province, Years, School, Course, Gender },
+    components : { PageHeader, Count, Total, Province, Years, School, Course, Gender, Status },
     data(){
         return {
             currentUrl: window.location.origin,

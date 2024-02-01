@@ -3,66 +3,75 @@
         <div class="card-header align-items-center d-flex">
             <h5 class="card-title mb-0 flex-grow-1">Most Schools</h5>
             <div>
-                <!-- <button class="btn btn-soft-primary btn-sm" type="button">
-                    <div @click="viewSchools" class="btn-content"> View all </div>
-                </button> -->
                 <div class="input-group input-group-sm">
-                    <select v-model="scholars" @change="fetch('desc')" class="form-select" id="inputGroupSelect01" style="width: 170px;">
+                    <select v-model="scholars" @change="fetch()" class="form-select" id="inputGroupSelect01">
                         <option :value="null">All Scholars</option>
                         <option value="ongoing">Ongoing Scholars</option>
                         <option value="graduated">Graduated Scholars</option>
                     </select>
-                    <b-button type="button" variant="primary">
+                    <!-- <b-button @click="openView()" type="button" variant="primary">
                         View
-                    </b-button>
+                    </b-button> -->
                 </div>
             </div>
         </div>
-        <div class="card-body" style="height: 300px;">
-            <div class="table-responsive table-card">
+        <div class="card-body" style="height: 330px;">
+            <div class="table-responsive table-card" ref="cardRef">
                 <table class="table align-middle table-centered table-nowrap mb-3">
                     <thead class="text-muted table-light fs-11">
                         <tr>
-                            <th style="cursor: pointer;">  
+                            <th style="cursor: pointer; width: 40px;">  
                                 <i @click="fetch('asc')" v-if="sort == 'desc'" class="ri-sort-asc"></i> 
                                 <i @click="fetch('desc')" v-else class="ri-sort-desc"></i> 
                             </th>
                             <th scope="col">School</th>
-                            <th class="text-center" scope="col">#</th>
-                            <th class="text-center" scope="col">%</th>
+                            <th class="text-center" style="width: 80px;">#</th>
+                            <th class="text-center" style="width: 80px;">%</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(list,index) in schools" v-bind:key="index">
-                            <td>{{index + 1}}</td>
-                            <td>{{ucwords(list.school.name)}}</td>
+                            <td>{{(meta.current_page - 1) * meta.per_page + (index + 1) }}</td>
+                            <td class="text-truncate" style="cursor: pointer;" :style="{ 'max-width': cardRef + 'px' }">{{ucwords(list.school.name)}}</td>
                             <td class="text-center">{{list.scholars_count}} </td>
                             <td class="text-center">{{percentage(list.scholars_count)}}</td>
                         </tr>
                     </tbody>
                 </table>
+                <Pagination class="ms-3 me-3" v-if="meta" @fetch="fetch" :lists="schools.length" :links="links" :pagination="meta" />
             </div>
         </div>
     </div>
+    <School ref="school"/>
 </template>
 <script>
+import Pagination from "@/Shared/Components/Pagination.vue";
+import School from '../Modals/School.vue';
 export default {
+    components: { Pagination, School },
     props: ['total'],
     data(){
         return {
             currentUrl: window.location.origin,
             schools: [],
-            sort: null,
+            meta: {},
+            links: {},
+            sort: 'desc',
             scholars: null,
+            cardRef: null,
         }
     },
     created(){
-        this.fetch('desc');
+        this.fetch();
+    },
+    mounted() {
+        this.getCardWidth();
+        window.addEventListener('resize', this.getCardWidth);
     },
     methods : {
-        fetch(sort) {
-            this.sort = sort;
-            axios.get(this.currentUrl + '/insights', {
+        fetch(page_url){
+            page_url = page_url || '/insights';
+            axios.get(page_url, {
                 params: {
                     type: 'schools',
                     sort: this.sort,
@@ -70,7 +79,9 @@ export default {
                 }
             })
             .then(response => {
-                this.schools = response.data;
+                this.schools = response.data.data;
+                this.meta = response.data.meta;
+                this.links = response.data.links;
             })
             .catch(err => console.log(err));
         },
@@ -83,9 +94,17 @@ export default {
         percentage(data){
             return (_.divide(data, this.total)*100).toFixed(2)+'%';
         },
-        viewSchools(){
+        openView(){
             this.$refs.schools.set();
-        }
+        },
+        getCardWidth() {
+            const cardRef = this.$refs.cardRef;
+            if (cardRef) {
+                const cardWidth = cardRef.clientWidth;
+                const eightyPercent = cardWidth-200;
+                this.cardRef = eightyPercent;
+            }
+        },
     }
 }
 </script>

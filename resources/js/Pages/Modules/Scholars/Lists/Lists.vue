@@ -8,16 +8,15 @@
                     <option :value="null" selected>Select Program</option>
                     <option :value="list.id" v-for="list in program_list" v-bind:key="list.id">{{list.name}}</option>
                 </select> -->
-                <!-- <select v-model="filter.type" @change="fetch()" class="form-select" id="inputGroupSelect01" style="width: 120px;">
-                    <option :value="null" selected>Select Type</option>
-                    <option value="1">Undergraduate</option>
-                    <option value="0">JLSS</option>
-                </select> -->
+                <select v-model="filter.type" @change="fetch()" class="form-select" id="inputGroupSelect01" style="width: 100px;">
+                    <option :value="null" selected>All Scholars</option>
+                    <option value="ongoing">Ongoing Scholars</option>
+                </select>
                 <!-- <select v-model="filter.status" @change="fetch()" class="form-select" id="inputGroupSelect02" style="width: 120px;">
                     <option :value="null" selected>Select Status</option>
                     <option :value="list.id" v-for="list in status_list" v-bind:key="list.id">{{list.name}}</option>
                 </select> -->
-                <input type="text" v-model="filter.year" placeholder="Year Awarded" class="form-control" style="width: 30px;">
+                <input type="text" v-model="filter.year" placeholder="Year Awarded" class="form-control" style="width: 100px;">
                 <span @click="refresh" class="input-group-text" v-b-tooltip.hover title="Refresh" style="cursor: pointer;"> 
                     <i class="bx bx-refresh search-icon"></i>
                 </span>
@@ -108,7 +107,8 @@ export default {
                 subfilters: [],
                 year: null,
                 keyword: null,
-                sort: 'asc'
+                sort: 'asc',
+                type: null
             },
             subfilters: [],
             flag: '',
@@ -135,7 +135,8 @@ export default {
                 'keyword': this.filter.keyword,
                 'year': (this.filter.year === '' || this.filter.year == null) ? '' : this.filter.year,
                 'counts': parseInt(((window.innerHeight-350)/56)),
-                'sort': this.filter.sort
+                'sort': this.filter.sort,
+                'type': this.filter.type,
             };
 
             info = (Object.keys(info).length == 0) ? '-' : JSON.stringify(info);

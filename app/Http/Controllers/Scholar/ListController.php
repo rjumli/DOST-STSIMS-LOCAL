@@ -80,6 +80,9 @@ class ListController extends Controller
                 case 'prospectus': 
                     return $this->save->prospectus($request);
                 break;
+                case 'scholar': 
+                    return $this->save->scholar($request);
+                break;
             }
         });
 

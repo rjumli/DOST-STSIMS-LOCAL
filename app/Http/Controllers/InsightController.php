@@ -24,6 +24,12 @@ class InsightController extends Controller
             case 'courses':
                 return $this->count->courses($request);
             break;
+            case 'genders':
+                return $this->count->genders($request);
+            break;
+            case 'statuses':
+                return $this->count->statuses($request);
+            break;
             default : 
             return inertia('Modules/Insights/Index',[
                 'statistics' => $this->count->statistics($request)

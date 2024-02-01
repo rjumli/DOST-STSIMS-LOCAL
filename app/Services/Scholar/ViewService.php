@@ -58,6 +58,11 @@ class ViewService
                 }
                 if(!empty($info)){
                     ($info->year == null) ? '' : $query->where('awarded_year',$info->year);
+                    if($info->type != null){
+                        $query->whereHas('status',function ($query) {
+                            $query->where('type','ongoing');
+                        });
+                    }
                 }
              })
             ->orderBy('awarded_year',$info->sort)
