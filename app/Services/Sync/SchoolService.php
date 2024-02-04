@@ -3,6 +3,7 @@
 namespace App\Services\Sync;
 
 use App\Models\School;
+use App\Models\SchoolName;
 use App\Models\SchoolCourse;
 use App\Models\SchoolCampus;
 use App\Traits\HandlesCurl;
@@ -29,13 +30,19 @@ class SchoolService
                 foreach($data->campuses as $campus)
                 {   
                     $lst1 = (array)$campus;
-                    $lst = array_pop($lst1);
+                    $names = array_pop($lst1);
+                    $courses = array_pop($lst1);
                     $lst1['is_synced'] = 1;
                     $q = SchoolCampus::insertOrIgnore($lst1);
-                    foreach($lst as $course){
+                    foreach($courses as $course){
                         $course = (array)$course;
                         $course['is_synced'] = 1;
                         $q = SchoolCourse::insertOrIgnore((array)$course);
+                    }
+                    foreach($names as $name){
+                        $name = (array)$name;
+                        $name['is_synced'] = 1;
+                        $q = SchoolName::insertOrIgnore((array)$name);
                     }
                 } 
             }

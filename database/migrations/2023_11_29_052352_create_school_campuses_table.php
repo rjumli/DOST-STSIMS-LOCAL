@@ -16,10 +16,12 @@ return new class extends Migration
         Schema::create('school_campuses', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('oldname')->nullable();
+            // $table->string('code')->nullable();
+            // $table->string('oldname')->nullable();
             $table->string('campus')->nullable();
             $table->string('address');
             $table->boolean('is_main');
+            $table->boolean('is_alone')->default(0);
             $table->boolean('is_active')->default(1);
             $table->integer('school_id')->unsigned()->index();
             $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');

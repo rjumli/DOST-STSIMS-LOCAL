@@ -85,7 +85,7 @@ class ApiService
                                         array_push($success,$spas_id);
                                         \DB::commit();
                                     }else{
-                                        array_push($failed,$spas_id);
+                                        array_push($failed,$education);
                                         \DB::rollback();
                                     }
                                 }else{

@@ -67,7 +67,7 @@ class ListController extends Controller
         ->orWhere(function ($query) use ($keyword) {
             $query->where('campus',$keyword);
         })
-        ->get()->take(10);
+        ->get();
 
         return SchoolResource::collection($data);
     }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('name')->unique();
             $table->string('shortcut');
+            $table->string('combiner')->nullable();
             $table->string('avatar',200)->default('school.jpg');
             $table->tinyInteger('class_id')->unsigned()->index();
             $table->foreign('class_id')->references('id')->on('list_dropdowns')->onDelete('cascade');

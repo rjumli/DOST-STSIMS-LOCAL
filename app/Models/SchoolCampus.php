@@ -13,7 +13,7 @@ class SchoolCampus extends Model
         'campus',
         'shortcut',
         'address',
-        'oldname',
+        // 'oldname',
         'is_main',
         'term_id',
         'grading_id',
@@ -52,6 +52,11 @@ class SchoolCampus extends Model
     public function courses()
     {
         return $this->hasMany('App\Models\SchoolCourse', 'school_id');
+    } 
+
+    public function names()
+    {
+        return $this->hasMany('App\Models\SchoolName', 'school_id');
     } 
 
     public function semesters()
