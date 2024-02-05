@@ -69,7 +69,6 @@
                 this.scholar_id = scholar;
                 this.showModal = true;
             },
-
             create() {
                 this.form = this.$inertia.form({
                     to: this.to,
@@ -86,17 +85,14 @@
                     }
                 });
             },
-
             search() {
                 // if (this.subject.length > 0) {
                     this.lists = this.subjects.filter(x => x.code === this.subject);
                 // }
             },
-
             log(arg){
                 this.to = arg;
             },
-
             hide(){
                 (this.form.hasOwnProperty('reset') ) ? this.form.reset().clearErrors() : '';
                 this.from = '';

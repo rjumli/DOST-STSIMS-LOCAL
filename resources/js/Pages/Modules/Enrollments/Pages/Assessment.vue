@@ -106,7 +106,6 @@ export default {
                });
          }
          return (sum/tot).toFixed(3);
-         this.$forceUpdate();
       },
       failed: function(){
          var count = 0;

@@ -13,7 +13,8 @@
             </div>
         </div>
         <hr class="text-muted"/>
-        <div>
+        <h5 class="fs-12 text-uppercase text-muted">SCHOLAR PROGRESS</h5>
+        <div class="table-responsive">
             <table class="table table-borderless table-sm table-centered align-middle table-nowrap">
                 <tbody class="border-0">
                     <tr v-for="(count,index) in statistics" v-bind:key="index">
@@ -30,15 +31,16 @@
             </table>
         </div>
         <hr class="text-muted mt-n1 mb-3"/>
-        <div>
+        <h5 class="fs-12 text-uppercase text-muted">SCHOLAR TYPE</h5>
+        <div class="table-responsive">
             <table class="table table-borderless table-sm table-centered align-middle table-nowrap">
                 <tbody class="border-0">
                     <tr v-for="(count,index) in types" v-bind:key="index">
                         <td>
-                            <h4 class="text-truncate fs-13 fs-medium mb-0"><i class="ri-stop-fill align-middle fs-18 me-2" :class="colors[index]"></i>{{options2[index]}}</h4>
+                            <h4 class="text-truncate fs-13 fs-medium mb-0"><i class="ri-checkbox-blank-circle-fill align-middle fs-14 me-2" :class="colors[index+3]"></i>{{options2[index]}}</h4>
                         </td>
                         <td class="text-end">
-                            <p class="fw-bold mb-0 fs-12" :class="colors[index]">{{count}}</p>
+                            <p class="fw-bold mb-0 fs-12" :class="colors[(index+3)]">{{count}}</p>
                         </td>
                     </tr>
                 </tbody>
@@ -73,7 +75,7 @@
             </b-row>
         </div>
     </div>
-    <Sync ref="sync"/>
+    <Sync ref="sync" @info="update()"/>
     <Download ref="download" @info="refresh()"/>
     <Truncate ref="truncate" @info="refresh()"/>
     <Print :statuses="statuses" :programs="programs" ref="print"/>
@@ -90,7 +92,7 @@ export default {
         return {
             options: ['Ongoing Scholars','Graduated Scholars','Total Scholars'],
             options2: ['Undegraduate Scholarhip','Junior Level Science Scholarship'],
-            colors: ['text-primary','text-info','text-success'],
+            colors: ['text-primary','text-info','text-success','text-warning','text-danger'],
         }
     },
     methods: {

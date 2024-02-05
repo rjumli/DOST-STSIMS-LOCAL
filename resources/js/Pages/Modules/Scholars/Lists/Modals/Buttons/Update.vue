@@ -70,6 +70,7 @@ export default {
             this.form = this.$inertia.form({
                 id: this.selected.id,
                 status_id: this.status,
+                is_synced: 0,
                 type: 'scholar'
             })
 

@@ -72,11 +72,6 @@
                         <!-- <b-button v-if="user.user == null" @click="authenticate(user)" variant="soft-primary" v-b-tooltip.hover title="Create Scholar Account" size="sm" class="edit-list me-1"><i class="ri-user-add-fill align-bottom"></i> </b-button> -->
                         <b-button @click="openUpdate(user,'status',index)" variant="soft-warning" v-b-tooltip.hover title="Update Status" size="sm" class="remove-list me-1"><i class="ri-pencil-fill align-bottom"></i></b-button>
                         <b-button @click="openView(user)" variant="soft-info" v-b-tooltip.hover title="View Profile" size="sm" class="remove-list me-n2"><i class="ri-eye-fill align-bottom"></i></b-button>
-                        <!-- <b-button v-if="user.account_no == null && user.status.type == 'Ongoing'" @click="showUpdate(user,'scholar',index)" variant="soft-danger" v-b-tooltip.hover title="Update Account No." size="sm" class="remove-list me-1"><i class="ri-bank-card-2-fill align-bottom"></i></b-button>
-                        <b-button v-if="user.education.is_completed == 0" @click="showUpdate(user,'education',index)" variant="soft-danger" v-b-tooltip.hover title="Update Education" size="sm" class="remove-list me-1"><i class="ri-hotel-fill align-bottom"></i></b-button>
-                        <b-button v-if="user.addresses[0].is_completed == 0" @click="showUpdate(user,'address',index)" variant="soft-danger" v-b-tooltip.hover title="Update Address" size="sm" class="remove-list me-1"><i class="ri-map-pin-fill align-bottom"></i></b-button>
-                        <Link v-if="user.is_completed == 1" :href="`/scholars/${user.code}`"><b-button variant="soft-info" v-b-tooltip.hover title="View" size="sm" class="remove-list me-1"><i class="ri-eye-fill align-bottom"></i></b-button></Link> -->
-                        <!-- <b-button variant="soft-primary" v-b-tooltip.hover title="Edit" size="sm" class="edit-list"><i class="ri-pencil-fill align-bottom"></i> </b-button> -->
                     </td>
                 </tr>
             </tbody>
@@ -115,12 +110,29 @@ export default {
             index: ''
         }
     },
+    computed: {
+        data() {
+            return this.$page.props.flash;
+        },
+    },
     watch: {
         "filter.keyword"(newVal){
             this.checkSearchStr(newVal)
         },
         "filter.year"(newVal){
             this.checkSearchStr(newVal)
+        },
+        data: {
+            deep: true,
+            handler(val = null) {
+                if(val != null && val !== ''){
+                    switch(this.flag){
+                        case 'status':
+                            this.lists[this.index] = val.data.data;
+                        break;
+                    }
+                }
+            },
         },
     },
     created(){
