@@ -5,6 +5,7 @@ namespace App\Services\School;
 use App\Models\School;
 use App\Models\Release;
 use App\Models\SchoolCampus;
+use App\Models\SchoolName;
 use App\Models\SchoolCourse;
 use App\Models\ListDropdown;
 use App\Models\SchoolGrading;
@@ -79,7 +80,7 @@ class SaveService
                 $schools = array();
                 $campusess = array();
                 $courses = array();
-                
+                $namess = array();                
                 foreach($lists as $data){
                     $school = (array)$data;
                     $campuses = array_splice($school,9);
@@ -92,7 +93,8 @@ class SaveService
                     foreach($data->campuses as $campus)
                     {   
                         $lst1 = (array)$campus;
-                        $lst = array_pop($lst1);
+                        $names = array_pop($lst1);
+                        $courses = array_pop($lst1);
                         $lst1['is_synced'] = 1;
                         // $q = SchoolCampus::insertOrIgnore($lst1);
                         $count = SchoolCampus::where('id',$lst1['id'])->count();
@@ -100,15 +102,23 @@ class SaveService
                             $q = SchoolCampus::insertOrIgnore($lst1);
                             array_push($campusess,$q);
                         }
-                        foreach($lst as $course){
-                            $c = (array)$course;
-                            $c['is_synced'] = 1;
-                            $count = SchoolCourse::where('id',$c['id'])->count();
+                       foreach($courses as $course){
+                            $course = (array)$course;
+                            $course['is_synced'] = 1;
+                            $count = SchoolCourse::where('id',$course['id'])->count();
                             if($count == 0){
-                                $q = SchoolCourse::insertOrIgnore($c);
+                                $q = SchoolCourse::insertOrIgnore((array)$course);
                                 array_push($courses,$q);
                             }
-                            // $q = SchoolCourse::insertOrIgnore((array)$course);
+                        }
+                        foreach($names as $name){
+                            $name = (array)$name;
+                            $name['is_synced'] = 1;
+                            $count = SchoolName::where('id',$name['id'])->count();
+                            if($count == 0){
+                                $q = SchoolName::insertOrIgnore((array)$name);
+                                array_push($namess,$q);
+                            }
                         }
                     } 
                 }
@@ -117,6 +127,7 @@ class SaveService
                     'success' => $schools,
                     'failed' => $campusess,
                     'duplicate' => $courses,
+                    'names' => $namess
                 ];
                 return $result;
             });

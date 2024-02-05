@@ -73,11 +73,12 @@ class ListController extends Controller
     }
 
     public function courses(Request $request){
-        $id = $request->id;
-        $data = SchoolCourse::whereHas('school',function ($query) use ($id) {
-            $query->where('id',$id);
-        })
-        ->get();
+        // $id = $request->id;
+        // $data = SchoolCourse::whereHas('school',function ($query) use ($id) {
+        //     $query->where('id',$id);
+        // })
+        // ->get();
+        $data = ListCourse::get();
         return CourseResource::collection($data);
     }
 

@@ -152,7 +152,7 @@
                                         <Multiselect class="form-control"
                                             placeholder="Select Course" label="course" trackBy="course"
                                             v-model="course" :close-on-select="true" 
-                                            :searchable="false" :options="courses"/>
+                                            :searchable="true" :options="courses"/>
                                     </div>
                                     <!-- <div class="col-md-12">
                                         <label>School: <span v-if="form.errors" v-text="form.errors.school_id" class="haveerror"></span></label>
@@ -222,7 +222,7 @@
                                         <Multiselect class="form-control"
                                             placeholder="Select Course" label="course" trackBy="course"
                                             v-model="course" :close-on-select="true" 
-                                            :searchable="false" :options="courses"/>
+                                            :searchable="true" :options="courses"/>
                                     </div>
                                     <div class="col-md-12 mt-3">
                                         <div class="alert alert-warning mb-xl-0" role="alert">Please double-check all fields before saving. <b>Once submitted, changes cannot be undone.</b></div>

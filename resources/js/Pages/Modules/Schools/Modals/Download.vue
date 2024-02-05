@@ -43,6 +43,12 @@
                                                 <p class="text-warning fw-semibold mb-0">Courses</p>
                                             </div>
                                         </div>
+                                        <div class="col-sm-4">
+                                            <div class="p-3 border border-dashed border-start-0">
+                                                <h5 class="mb-1"><span>{{names.length}}</span></h5>
+                                                <p class="text-warning fw-semibold mb-0">Names</p>
+                                            </div>
+                                        </div>
                                     </div>
                 
                                     <div class="mt-4" v-if="!hide2">
@@ -69,6 +75,7 @@ export default {
             success: [],
             failed: [],
             duplicate: [],
+            names: [],
             isLoading: false,
             result: false,
             hide2: false,
@@ -100,6 +107,7 @@ export default {
                 this.success = response.data.success;
                 this.failed = response.data.failed;
                 this.duplicate = response.data.duplicate;
+                this.names = response.data.names;
                 this.$emit('info',true);
             })
             .catch(err => {
@@ -112,6 +120,7 @@ export default {
             this.success = [];
             this.failed = [];
             this.duplicate = [];
+            this.names = [];
             this.result = false;
             this.showModal = false;
         }
