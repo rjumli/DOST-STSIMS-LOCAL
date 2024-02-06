@@ -3,6 +3,8 @@
 namespace App\Services\Monitoring;
 
 use App\Models\Release;
+use App\Models\Scholar;
+use App\Models\ScholarEducation;
 use App\Models\ScholarEnrollment;
 use App\Models\ScholarEnrollmentBenefit;
 
@@ -35,5 +37,17 @@ class SaveService
             }
         }
         return ['completed' => true];
+    }
+
+    public function status($request){
+        $scholars = $request->scholars;
+        $data = Scholar::whereIn('id',$scholars)->update(['status_id' => $request->status_id,'is_synced' => 0]);
+        return $data;
+    }
+
+    public function level($request){
+        $scholars = $request->scholars;
+        $data = ScholarEducation::whereIn('scholar_id',$scholars)->update(['level_id' => $request->level_id,'is_synced' => 0]);
+        return $data;
     }
 }

@@ -10,10 +10,28 @@ class SchoolResource extends JsonResource
     public function toArray(Request $request): array
     {
         $campus = ($this->is_main == 0) ? '- '.$this->campus : '- Main'; 
+
+        $name = ucwords(strtolower($this->school->name));
+        
+        if($this->is_main){
+            if(!$this->is_alone){
+                $campus = '';
+            }else{
+                $campus = '';
+            }
+        }else{
+            if($this->is_alone){
+                $campus = '';
+            }else{
+                $campus = ' - '.ucwords(strtolower($this->campus));
+            }
+        }
+
+
         return [
             'id' => $this->id,
             'selected' => false,
-            'name' => ucwords(strtolower($this->school->name.' '.$campus)),
+            'name' => $name.$campus,
             'class' => $this->school->class->name,
             'campus' => $this->campus,
             'term' => $this->term->name,

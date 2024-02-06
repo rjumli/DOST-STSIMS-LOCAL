@@ -2,9 +2,14 @@
 
 namespace App\Services\Monitoring;
 
+use App\Models\Scholar;
 use App\Models\Setting;
 use App\Models\ListStatus;
+use App\Models\ListDropdown;
 use App\Models\SchoolCampus;
+use App\Models\ScholarEnrollment;
+use App\Http\Resources\Dropdown\ListResource;
+use App\Http\Resources\Dropdown\StatusResource;
 use App\Http\Resources\Monitoring\SchoolResource;
 
 class ViewService
@@ -30,27 +35,24 @@ class ViewService
         return ['schools' => SchoolResource::collection($data)];
     }
 
-    public function statistics($request){
+    public function batches($request){
+        $ongoingYears = Scholar::whereHas('status', function ($query) {
+            $query->where('type', 'Ongoing');
+        })
+        ->pluck('awarded_year')
+        ->unique()
+        ->sort()
+        ->values()
+        ->all();
+
+        $year = $ongoingYears[0];
         return [
-            'statistics' => [
-                'right' => [
-
-                ],
-                'middle' => [
-
-                ],
-                'left' => [
-                    
-                ]
-                // 'count_status' => $this->statuses(),
-                // 'count_checking' => $this->checking($request),
-                // 'count_released' => $this->released(),
-                // 'terms' => [
-                //     'semester' => SchoolCampus::where('term_id',4)->where('region_code',$this->code)->count(),
-                //     'trimester' => SchoolCampus::where('term_id',5)->where('region_code',$this->code)->count(),
-                //     'quarter' => SchoolCampus::where('term_id',6)->where('region_code',$this->code)->count(),
-                // ]
-            ]
+            'years' => $ongoingYears, 
+            'dropdowns' => [
+                'statuses' => StatusResource::collection(ListStatus::get()),
+                'lists' => ListResource::collection(ListDropdown::all()),
+            ],
+            'statistics' => $this->statistics($request,$ongoingYears)
         ];
     }
 
@@ -70,5 +72,68 @@ class ViewService
 
     public function released(){
         return [];
+    }
+
+    public function years($years){
+        $statuses = ListStatus::whereIn('type',['Progress','Ongoing'])->get();
+        $levels = ListDropdown::where('classification','Level')->get();
+
+        $array = []; $sums = []; $total = [];
+        
+        foreach($years as $key=>$year){
+            $count = [];
+            foreach($levels as $key2=>$level){
+                $l = $level->id;
+                $data = Scholar::where('awarded_year',$year)
+                ->whereHas('education',function ($query) use ($l){
+                    $query->where('level_id',$l);
+                })
+                ->count();
+                array_push($count,$data);    
+                $sums[$key2][$key] = $data;
+            }
+
+            $array[] = [
+                'status' => $year,
+                'count' => $count,
+                'total' => array_sum($count)
+            ];
+        }
+
+        foreach($levels as $key2=>$level){
+            $total[] = array_sum($sums[$key2]); 
+        }
+
+        $total2 = [
+            'status' => 'Total',
+            'count' => $total,
+            'total' => array_sum($total)
+        ];
+        
+        $all = [
+            'statuses' => $array,
+            'totals' => $total2,
+            'types' => $levels
+        ];
+        return $all;
+    }
+
+    public function statistics($request,$ongoingYears){
+        $year = ($ongoingYears) ? $ongoingYears[0] : $request->year;
+        return [
+            'year' => $year,
+            'ongoing' => ScholarEnrollment::where('is_enrolled',1)
+            ->whereHas('scholar',function ($query) use ($year){
+                $query->whereHas('status', function ($query) use ($year){
+                    $query->where('type', 'Ongoing');
+                })->where('awarded_year',$year);
+            })
+            ->whereHas('semester',function ($query){
+                $query->where('is_active',1);
+            })->count(),
+            'total' => Scholar::whereHas('status', function ($query) {
+                $query->where('type', 'Ongoing');
+            })->where('awarded_year',$year)->count()
+        ];
     }
 }

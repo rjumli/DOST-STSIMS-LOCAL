@@ -88,6 +88,9 @@
     <Link :href="`/monitoring/schools`">
         <b-button variant="light" class="btn-label waves-effect waves-light"><i class="bx bxs-webcam label-icon align-middle fs-16 me-2"></i> Monitor Schools</b-button>
     </Link>
+     <Link :href="`/monitoring/batches`">
+        <b-button variant="light" class="btn-label waves-effect waves-light"><i class="bx bxs-webcam label-icon align-middle fs-16 me-2"></i> Monitor Batches</b-button>
+    </Link>
     
     
     <Year ref="year"/>

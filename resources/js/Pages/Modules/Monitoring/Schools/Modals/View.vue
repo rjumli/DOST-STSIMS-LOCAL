@@ -23,11 +23,10 @@
                 <div class="col-md-12 mt-n2">
                     <hr class="text-muted"/>
                 </div>
-                 <div class="col-md-12 mt-n1 mb-3" v-if="message">
-                    <div class="alert alert-warning fs-10 mb-xl-0" role="alert">Start date cannot be after end date
+                <div class="col-md-12 mt-n1 mb-3" v-if="message">
+                    <div class="alert alert-warning fs-10 mb-xl-0" role="alert">Start date cannot be after end date</div>
                 </div>
-                </div>
-                 <div class="col-md-6 mt-n1">
+                <div class="col-md-6 mt-n1">
                     <!-- <label>Start At: <span v-if="form.errors" v-text="form.errors.start_at" class="haveerror"></span></label> -->
                     <date-picker
                         v-model:value="semester.start"

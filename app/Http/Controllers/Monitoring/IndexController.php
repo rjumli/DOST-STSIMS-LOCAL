@@ -37,6 +37,12 @@ class IndexController extends Controller
             case 'terminations':
                 return $this->list->terminations($request);
             break;
+            case 'batches':
+                return [
+                    'data' => $this->list->batches($request),
+                    'updated' => $this->view->statistics($request,$year = null)
+                ];
+            break;
             default : 
             return inertia('Modules/Monitoring/Index',$this->count->statistics($request));
         }
@@ -46,6 +52,9 @@ class IndexController extends Controller
         switch($type){
             case 'schools':
                 return inertia('Modules/Monitoring/Schools/Index',$this->view->schools());
+            break;
+            case 'batches':
+                return inertia('Modules/Monitoring/Batch/Index',$this->view->batches($request = null));
             break;
         }
     }
@@ -58,6 +67,12 @@ class IndexController extends Controller
                 break;
                 case 'termination':
                     return $this->save->terminate($request);
+                break;
+                case 'status':
+                    return $this->save->status($request);
+                break;
+                case 'level':
+                    return $this->save->level($request);
                 break;
             }
         });

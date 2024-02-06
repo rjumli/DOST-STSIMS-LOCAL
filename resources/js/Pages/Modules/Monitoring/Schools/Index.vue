@@ -4,13 +4,21 @@
      <div class="chat-wrapper d-lg-flex gap-1 mx-n4 mt-n4 p-1">
         <div class="file-manager-sidebar">
             <div class="p-4 d-flex flex-column h-100 file-detail-content-scroll" data-simplebar>
-                {{schools}}
+               
             </div>
          </div>
         <div class="file-manager-content p-3 pb-0 w-100" ref="myDiv">
             <div class="row mt-0">
                 <div class="col-md-12 mb-2">
-                    <span class="fs-14 fw-bold text-primary">SCHOOLS WITH ONGOING SCHOLARS</span>
+                    <div class="d-sm-flex align-items-center justify-content-between">
+                        <span class="fs-14 fw-bold text-primary">SCHOOLS WITH ONGOING SCHOLARS</span>
+                        <div class="page-title-right">
+                            <div class="input-group input-group-sm mt-n1 mb-1 float-end">
+                                <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
+                                <input type="text" v-model="searchTerm" @input="search" placeholder="Search" class="form-control" style="width: 40%;">
+                            </div>
+                        </div>
+                    </div>
                     <hr class="text-muted mb-2 mt-2"/>
                         <b-button  @click="selectClose()" :variant="closeVariant" size="sm" class="w-lg waves-effect waves-light me-1">Select All Close</b-button>
                         <b-button @click="selectOpen()" :variant="openVariant" size="sm" class="w-lg waves-effect waves-light me-1">Select All Open</b-button>
@@ -37,7 +45,7 @@
                                 </tr>
                             </thead>
                                 <tbody class=" fs-12">
-                                    <tr v-for="(list,index) in schools.data" v-bind:key="index">
+                                    <tr v-for="(list,index) in schools.data" v-bind:key="index" :class="(index == matchedRowIndex) ? (list.status) ? 'table-success' : 'table-danger' : ''" :id="'row-' + index">
                                         <td class="text-center">
                                             <input type="checkbox" v-model="list.selected" class="form-check-input" />
                                         </td>
@@ -61,7 +69,7 @@
             </div>
         </div>
     </div>
-    <Action ref="action"/>
+    <Action :settings="settings.data" ref="action"/>
     <View :settings="settings.data" ref="view"/>
 </template>
 <script>
@@ -83,6 +91,8 @@ export default {
             openVariant: 'light',
             publicVariant: 'light',
             privateVariant: 'light',
+            searchTerm: '',
+            matchedRowIndex: null,
         };
     },
     watch: {
@@ -150,12 +160,38 @@ export default {
             });
         },
         openAction(){
-            this.$refs.action.show(this.selected,this.schools.data,this.settings);
+            this.$refs.action.show(this.selected,this.schools.data);
         },
         openView(data){
             this.$refs.view.show(data);
-        }
+        },
+        search() {
+            const searchTerm = this.searchTerm.toLowerCase();
+            const matchedIndices = this.schools.data.reduce((indices, school, index) => {
+                if (school.name.toLowerCase().includes(searchTerm)) {
+                    indices.push(index);
+                }
+                return indices;
+            }, []);
+            if (matchedIndices.length > 0 && searchTerm !== '') {
+                const closestIndex = matchedIndices.reduce((closest, currentIndex) => {
+                    const closestDistance = Math.abs(closest - searchTerm.length);
+                    const currentDistance = Math.abs(currentIndex - searchTerm.length);
+                    return currentDistance < closestDistance ? currentIndex : closest;
+                }, matchedIndices[0]);
 
+                this.matchedRowIndex = closestIndex;
+
+                const rowId = 'row-' + closestIndex;
+                const matchedRow = document.getElementById(rowId);
+
+                if(matchedRow){
+                    matchedRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }else {
+                this.matchedRowIndex = null;
+            }
+        },
     }
 }
 </script>

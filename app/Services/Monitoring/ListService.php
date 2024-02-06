@@ -4,6 +4,7 @@ namespace App\Services\Monitoring;
 
 use App\Models\Scholar;
 use App\Models\ScholarEnrollment;
+use App\Http\Resources\Monitoring\ScholarResource;
 use App\Http\Resources\Monitoring\LackingResource;
 use App\Http\Resources\Monitoring\BenefitResource;
 use App\Http\Resources\Monitoring\MissedResource;
@@ -125,7 +126,7 @@ class ListService
             $query->where('semester_id',$semester);
         })
         ->whereHas('scholar',function ($query){
-            $query ->whereHas('status',function ($query){
+            $query->whereHas('status',function ($query){
                 $query->where('type','ongoing');
             });
         })
@@ -134,5 +135,18 @@ class ListService
         ->paginate(5);
 
         return TerminationResource::collection($data);
+    }
+
+    public function batches($request){
+        $year = $request->year;
+        $data = Scholar::with('education.school.school','education.course','education.level','profile','status')
+        ->whereHas('status',function ($query){
+            $query->where('type','ongoing');
+        })
+        ->where('awarded_year',$year)->get()
+        ->sortBy(function ($scholar) {
+            return $scholar->profile->lastname;
+        });
+        return ScholarResource::collection($data);
     }
 }
