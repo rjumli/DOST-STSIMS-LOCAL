@@ -4,7 +4,48 @@
      <div class="chat-wrapper d-lg-flex gap-1 mx-n4 mt-n4 p-1">
         <div class="file-manager-sidebar">
             <div class="p-4 d-flex flex-column h-100" style="overflow: auto;">
-                <h6 class="fs-11 text-muted text-uppercase mb-3 mt-0">BATCH {{year}} SCHOLARS</h6>
+                <b-row class="align-items-center">
+                    <b-col cols="12">
+                        <Multiselect class="form-control"
+                        placeholder="Select Year"
+                        v-model="year" :close-on-select="true" :canClear="false"
+                        :searchable="false" :options="years" />
+                        <hr class="text-muted"/>
+                    </b-col>
+                    <b-col cols="6" class="mt-2">
+                        <h6 class="text-primary text-uppercase fw-semibold text-truncate fs-12 mb-3">{{year}} Ongoing Scholars</h6>
+                        <h4 class="fs-24 mb-0">{{subtotal}}</h4>
+                        <p class="mb-0 mt-2 text-muted">out of {{total}} scholars</p>
+                    </b-col>
+                    <b-col cols="6">
+                        <div class="text-center">
+                            <img src="/imagess/illustrator-1.png" class="img-fluid" alt="">
+                        </div>
+                    </b-col>
+                    <b-col cols="12">
+                        <div class="mt-2 pt-2">
+                            <b-progress class="progress-lg rounded-pill" :max="subtotal">
+                                <b-progress-bar  v-for="(list,index) in modifiedItems" v-bind:key="index" :value="list.scholars_count" :variant="list.color" class="rounded-0" />
+                            </b-progress>
+                        </div>
+                    </b-col>
+                    <b-col cols="12">
+                        <div class="mt-2 pt-2">
+                            <div class="d-flex mb-2" v-for="(list,index) in modifiedItems" v-bind:key="index">
+                                <div class="flex-grow-1">
+                                    <p class="text-truncate text-muted fs-14 mb-0">
+                                        <i class="mdi mdi-circle align-middle me-2" :class="'text-'+list.color"></i>{{list.name}}
+                                    </p>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <p class="mb-0">{{list.scholars_count}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </b-col>
+                </b-row>
+                <hr class="text-muted"/>
+                <!-- <h6 class="fs-11 text-muted text-uppercase mb-3 mt-0">BATCH {{year}} SCHOLARS</h6>
                 <div class="d-flex align-items-center">
                     <div class="flex-shrink-0">
                         <i class="ri-database-2-line fs-17"></i>
@@ -16,7 +57,7 @@
                         <span class="text-muted fs-12 d-block text-truncate"><b>{{ongoing}}</b> out of <b>{{total}}</b> ongoing scholars are enrolled.</span>
                     </div>
                 </div>
-                <hr class="text-muted"/>
+                <hr class="text-muted"/> -->
             </div>
          </div>
         <div class="file-manager-content w-100 p-4 pb-0" ref="myDiv">
@@ -25,10 +66,6 @@
                     <div class="input-group mb-1">
                         <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
                         <input type="text" v-model="searchTerm" @input="search" placeholder="Search Scholar" class="form-control" style="width: 60%;">
-                        <Multiselect class="form-control" style="width:10%"
-                        placeholder="Select Year"
-                        v-model="year" :close-on-select="true" :canClear="false"
-                        :searchable="false" :options="years" />
                         <b-button type="button" variant="primary" @click="openUpdate">
                             <i class="ri-add-circle-fill align-bottom me-1"></i>Update
                         </b-button>
@@ -99,15 +136,25 @@ export default {
             matchedRowIndex: null,
             selected: [],
             year: '',
+            subtotal: 0,
             total: 0,
-            ongoing: 0
+            ongoing: 0,
+            statuses: []
         };
     },
     created(){
         this.year = this.statistics.year;
+        this.subtotal = this.statistics.subtotal;
         this.total = this.statistics.total;
         this.ongoing = this.statistics.ongoing;
+        this.statuses = this.statistics.statuses;
         this.fetch();
+    },
+    computed: {
+        modifiedItems() {
+            let a = (this.statuses) ? this.statuses.map(item => ({...item, color: item.color.replace('bg-', '')})) : [];
+            return a;
+        }
     },
     watch: {
         mark(){
@@ -138,8 +185,10 @@ export default {
             .then(response => {
                 this.lists = response.data.data;
                 this.year = response.data.updated.year;
+                this.subtotal = response.data.updated.subtotal;
                 this.total = response.data.updated.total;
                 this.ongoing = response.data.updated.ongoing;
+                this.statuses = response.data.updated.statuses;
             })
             .catch(err => console.log(err));
         },

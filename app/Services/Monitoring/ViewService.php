@@ -131,9 +131,16 @@ class ViewService
             ->whereHas('semester',function ($query){
                 $query->where('is_active',1);
             })->count(),
-            'total' => Scholar::whereHas('status', function ($query) {
+            'subtotal' => Scholar::whereHas('status', function ($query) {
                 $query->where('type', 'Ongoing');
-            })->where('awarded_year',$year)->count()
+            })->where('awarded_year',$year)->count(),
+            'total' => Scholar::where('awarded_year',$year)->count(),
+            'statuses' => ListStatus::select('id','name','color','type')
+            ->where('type','ongoing')
+            ->withCount(['scholars' => function ($query) use ($year) {
+                $query->where('awarded_year', $year);
+            }])
+            ->orderBy('scholars_count', 'desc')->get()
         ];
     }
 }

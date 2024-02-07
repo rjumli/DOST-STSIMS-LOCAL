@@ -133,8 +133,8 @@ class CountService
     }
 
     public function statuses(){
-        $statuses = ListStatus::select('id','name','color','type')->where('type','ongoing')->withCount('status')->orderBy('status_count', 'desc')->get();
-        $substatuses = ListStatus::select('id','name','color','type')->where('is_active',1)->where('type','Status')->withCount('status')->get();
+        $statuses = ListStatus::select('id','name','color','type')->where('type','ongoing')->withCount('scholars')->orderBy('scholars_count', 'desc')->get();
+        $substatuses = ListStatus::select('id','name','color','type')->where('is_active',1)->where('type','Status')->withCount('scholars')->get();
     
         return [
             'statuses' => $statuses,

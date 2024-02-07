@@ -86,10 +86,13 @@
     </div>
     <hr class="text-muted mt-n2"/>
     <Link :href="`/monitoring/schools`">
-        <b-button variant="light" class="btn-label waves-effect waves-light"><i class="bx bxs-webcam label-icon align-middle fs-16 me-2"></i> Monitor Schools</b-button>
+        <b-button variant="light" class="btn-label waves-effect waves-light"><i class="bx bxs-webcam label-icon align-middle fs-16 me-2"></i> School Monitoring</b-button>
     </Link>
-     <Link :href="`/monitoring/batches`">
-        <b-button variant="light" class="btn-label waves-effect waves-light"><i class="bx bxs-webcam label-icon align-middle fs-16 me-2"></i> Monitor Batches</b-button>
+    <Link :href="`/monitoring/batches`" class="ms-2">
+        <b-button variant="light" class="btn-label waves-effect waves-light"><i class="bx bxs-webcam label-icon align-middle fs-16 me-2"></i> Batch Monitoring  </b-button>
+    </Link>
+     <Link :href="`/monitoring/schools`" class="ms-2">
+        <b-button variant="light" class="btn-label waves-effect waves-light"><i class="bx bxs-webcam label-icon align-middle fs-16 me-2"></i> School Monitoring</b-button>
     </Link>
     
     

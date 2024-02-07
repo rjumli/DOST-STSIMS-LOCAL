@@ -15,7 +15,7 @@
         <b-col cols="12">
             <div class="mt-2 pt-2">
                 <b-progress class="progress-lg rounded-pill" :max="totalSum">
-                    <b-progress-bar  v-for="(list,index) in modifiedItems" v-bind:key="index" :value="list.status_count" :variant="list.color" class="rounded-0" />
+                    <b-progress-bar  v-for="(list,index) in modifiedItems" v-bind:key="index" :value="list.scholars_count" :variant="list.color" class="rounded-0" />
                 </b-progress>
             </div>
         </b-col>
@@ -28,7 +28,7 @@
                         </p>
                     </div>
                     <div class="flex-shrink-0">
-                        <p class="mb-0">{{list.status_count}}</p>
+                        <p class="mb-0">{{list.scholars_count}}</p>
                     </div>
                 </div>
             </div>
@@ -74,7 +74,7 @@ export default {
     props:['right'],
     computed: {
         totalSum() {
-            let a = (this.right.statuses.statuses) ? this.right.statuses.statuses.reduce((sum, item) => sum + parseFloat(item.status_count), 0) : 0;
+            let a = (this.right.statuses.statuses) ? this.right.statuses.statuses.reduce((sum, item) => sum + parseFloat(item.scholars_count), 0) : 0;
             return a;
         },
         modifiedItems() {

@@ -9,7 +9,7 @@ class ListStatus extends Model
 {
     use HasFactory;
     
-    public function status()
+    public function scholars()
     {
         return $this->hasMany('App\Models\Scholar', 'status_id');
     } 
