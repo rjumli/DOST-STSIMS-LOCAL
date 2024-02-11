@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('user_profiles', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->smallIncrements('id');
+            $table->bigIncrements('id');
             $table->string('firstname',150);
             $table->string('lastname',150);
             $table->string('middlename',100);
